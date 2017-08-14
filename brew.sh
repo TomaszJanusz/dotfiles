@@ -3,7 +3,7 @@ echo "Do you wish to install Homebrew?"
 select yn in "Yes" "No"; do
     case $yn in
         Yes ) /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" break;;
-        No ) exit;;
+        No ) break;;
     esac
 done
 # Make sure we’re using the latest Homebrew
@@ -23,7 +23,7 @@ brew install gnu-sed --with-default-names
 
 # Note: don’t forget to add `/usr/local/bin/bash` to `/etc/shells` before running `chsh`.
 brew install fish
-sudo echo '/usr/local/bin/fish' >> /etc/shells
+echo "/usr/local/bin/fish" | sudo tee -a /etc/shells
 chsh -s /usr/local/bin/fish
 brew install homebrew/completions/brew-cask-completion
 
@@ -34,10 +34,10 @@ brew install z
 # mtr - ping & traceroute. best.
 brew install mtr
 
-    # allow mtr to run without sudo
-    mtrlocation=$(brew info mtr | grep Cellar | sed -e 's/ (.*//') #  e.g. `/Users/paulirish/.homebrew/Cellar/mtr/0.86`
-    sudo chmod 4755 $mtrlocation/sbin/mtr
-    sudo chown root $mtrlocation/sbin/mtr
+# allow mtr to run without sudo
+mtrlocation=$(brew info mtr | grep Cellar | sed -e 's/ (.*//') #  e.g. `/Users/paulirish/.homebrew/Cellar/mtr/0.86`
+sudo chmod 4755 $mtrlocation/sbin/mtr
+sudo chown root $mtrlocation/sbin/mtr
 
 
 # Install other useful binaries
@@ -52,7 +52,6 @@ brew install rename
 brew install tree
 brew install zopfli
 
-brew install terminal-notifier
 brew install pidcat   # colored logcat guy
 
 brew install ncdu # find where your diskspace went
