@@ -3,6 +3,7 @@
 
 # Install native apps
 brew tap caskroom/versions
+brew tap caskroom/drivers
 
 # daily
 brew cask install 1password
@@ -42,4 +43,24 @@ brew cask install font-fira-code
 brew tap tomick/homebrew-cask-alternatives
 brew cask install setapp
 
-# Wire
+
+
+
+echo "Do you wish to install Logitech Options?"
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) brew cask install logitech-options; break;;
+        No ) exit;;
+    esac
+done
+
+echo "Do you wish to install Brother Printer Drivers?"
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) brew cask install brotherprinterdrivers; break;;
+        No ) exit;;
+    esac
+done
+
+
+# Wire @TODO: https://github.com/caskroom/homebrew-cask/issues/23884
