@@ -1,6 +1,11 @@
 #!/bin/bash
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-
+echo "Do you wish to install Homebrew?"
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" break;;
+        No ) exit;;
+    esac
+done
 # Make sure we’re using the latest Homebrew
 brew update
 
