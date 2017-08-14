@@ -22,12 +22,9 @@ sudo echo '/usr/local/bin/fish' >> /etc/shells
 chsh -s /usr/local/bin/fish
 brew install homebrew/completions/brew-cask-completion
 
-# z hopping around folders
-brew install z
-
 # run this script when this file changes guy.
 brew install entr
-
+brew install z
 
 # mtr - ping & traceroute. best.
 brew install mtr
@@ -54,6 +51,7 @@ brew install terminal-notifier
 brew install pidcat   # colored logcat guy
 
 brew install ncdu # find where your diskspace went
+brew install thefuck # find where your command went wrong
 
 # Remove outdated versions from the cellar
 brew cleanup

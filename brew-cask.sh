@@ -11,6 +11,8 @@ brew cask install alfred
 
 # dev
 brew cask install iterm2-beta
+curl -L https://iterm2.com/shell_integration/install_shell_integration_and_utilities.sh | bash
+
 brew cask install imagealpha
 brew cask install imageoptim
 brew cask install tower
