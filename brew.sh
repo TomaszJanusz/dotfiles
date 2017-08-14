@@ -46,7 +46,10 @@ brew install fzf
 
 brew install git
 brew install imagemagick --with-webp
+# Node
 brew install node # This installs `npm` too using the recommended installation method
+npm install -g yarn
+
 brew install pv
 brew install rename
 brew install tree
