@@ -9,7 +9,7 @@
 set -l PA $PATH
 
 set -l paths "
-
+    ~/.rvm/bin
 "
 
 for entry in (string split \n $paths)

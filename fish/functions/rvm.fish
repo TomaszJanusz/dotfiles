@@ -10,12 +10,19 @@ function rvm --description='Ruby enVironment Manager'
     # needed under fish >= 2.2.0
     and set -xg GEM_PATH (echo $GEM_PATH | sed 's/ /:/g')
 
+    # Add gemset bin dir to $PATH
+    set -xg GEM_BIN_DIR $GEM_HOME/bin
+    if not contains -i $GEM_BIN_DIR $PATH
+      set -xg PATH $PATH $GEM_BIN_DIR
+    end
+
     # clean up
     rm -f $env_file
   end
 end
 
 function __handle_rvmrc_stuff --on-variable PWD
+
   # Source a .rvmrc file in a directory after changing to it, if it exists.
   # To disable this feature, set rvm_project_rvmrc=0 in $HOME/.rvmrc
   if test "$rvm_project_rvmrc" != 0
@@ -33,10 +40,12 @@ function __handle_rvmrc_stuff --on-variable PWD
           break
         else
           set cwd (dirname "$cwd")
+          set PATH (string match -v $GEM_BIN_DIR $PATH)
+          set -e GEM_BIN_DIR
         end
       end
     end
-
     set -e cwd
   end
 end
+  
