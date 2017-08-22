@@ -1,24 +1,31 @@
-function rvm --description='Ruby enVironment Manager'
-  if which -s rvm;
-    # run RVM and capture the resulting environment
-    set --local env_file (mktemp -t rvm.fish.XXXXXXXXXX)
-    # This finds where RVM's root directory is and sources scripts/rvm from within it.  Then loads RVM in a clean environment and dumps the environment variables it generates out for us to use. 
-    bash -c 'PATH=$GEM_HOME/bin:$PATH;RVMA=$(which rvm);RVMB=$(whereis rvm | sed "s/rvm://");source $(if test $RVMA;then echo $RVMA | sed "s/\/bin\//\/scripts\//";elif test $RVMB; then echo $RVMB | sed "s/rvm/rvm\/scripts\/rvm/"; else echo ~/.rvm/scripts/rvm; fi); rvm "$@"; status=$?; env > "$0"; exit $status' $env_file $argv
+function rvm -d 'Ruby enVironment Manager'
+  # run RVM and capture the resulting environment
+  set -l env_file (mktemp -t rvm.fish.XXXXXXXXXX)
 
-    # apply rvm_* and *PATH variables from the captured environment
-    and eval (grep -E '^rvm|^GEM_PATH|^GEM_HOME' $env_file | grep -v '_clr=' | sed '/^[^=]*PATH/s/:/" "/g; s/^/set -xg /; s/=/ "/; s/$/" ;/; s/(//; s/)//')
-    # needed under fish >= 2.2.0
-    and set -xg GEM_PATH (echo $GEM_PATH | sed 's/ /:/g')
+  bash -c '[ -e ~/.rvm/scripts/rvm ] && source ~/.rvm/scripts/rvm || \
+           source /usr/local/rvm/scripts/rvm; rvm "$@"; status=$?; \
+           env > "$0"; exit $status' $env_file $argv
 
-    # Add gemset bin dir to $PATH
-    set -xg GEM_BIN_DIR $GEM_HOME/bin
-    if not contains -i $GEM_BIN_DIR $PATH
-      set -xg PATH $PATH $GEM_BIN_DIR
-    end
+  # clear GEM_* variables
+  and begin; eval ( printenv | cut -f 1 -d '=' | grep GEM_ | sed -e 's|^\(.*\)|set -ge \1; |' ); end
 
-    # clean up
-    rm -f $env_file
+  # grep the rvm_* *PATH RUBY_* GEM_* variables from the captured environment
+  # exclude lines with _clr and _debug
+  # apply rvm_* *PATH RUBY_* GEM_* variables from the captured environment
+  and eval ( \
+    grep '^rvm\|^[^=]*PATH\|^RUBY_\|^GEM_' $env_file | \
+    grep -v _clr | grep -v _debug | \
+    sed '/^PATH/y/:/ /; s/^/set -xg /; s/=/ /; s/$/ ;/; s/(//; s/)//' \
+  )
+
+  # Add gemset bin dir to $PATH
+  set -xg GEM_BIN_DIR $GEM_HOME/bin
+  if not contains -i $GEM_BIN_DIR $PATH
+    set -xg PATH $PATH $GEM_BIN_DIR
   end
+
+  # clean up
+  rm -f $env_file
 end
 
 function __handle_rvmrc_stuff --on-variable PWD
