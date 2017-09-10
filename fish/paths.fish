@@ -5,8 +5,6 @@
 #     # rewrite ~/ to use {$HOME}
 #     sed "s/~\//{\$HOME}\//")
 
-set -U fish_path ~/.config/fish/fisherman
-
 set -l PA $PATH
 
 set -l paths "
