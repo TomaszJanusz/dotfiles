@@ -8,4 +8,4 @@ if test -e "$HOME/.extra.fish";
 	source ~/.extra.fish
 end
 
-rvm default
+# rvm default

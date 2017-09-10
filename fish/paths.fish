@@ -10,7 +10,7 @@ set -U fish_path ~/.config/fish/fisherman
 set -l PA $PATH
 
 set -l paths "
-    ~/.rvm/bin
+    # ~/.rvm/bin
 "
 
 for entry in (string split \n $paths)
