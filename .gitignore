@@ -1,5 +1,6 @@
 fish/conf.d/*
 fish/fishd.*
-fish/fisherman/*.fish
-fish/fisherman/*
-/fish/functions/fisher.fish
+fisherman/*.fish
+fisherman/*
+!fisherman/fishfile
+fish/functions/fisher.fish
