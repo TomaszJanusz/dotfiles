@@ -12,7 +12,6 @@ brew update
 # Upgrade any already-installed formulae
 brew upgrade
 
-
 # GNU core utilities (those that come with OS X are outdated)
 brew install coreutils
 brew install moreutils
@@ -27,7 +26,7 @@ echo "/usr/local/bin/fish" | sudo tee -a /etc/shells
 chsh -s /usr/local/bin/fish
 brew install homebrew/completions/brew-cask-completion
 curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs https://git.io/fisher #fisher package manager
-cd ~/.config/fish && fisher
+cd ~/.config/fisherman && fisher
 
 # run this script when this file changes guy.
 brew install entr
@@ -41,16 +40,20 @@ mtrlocation=$(brew info mtr | grep Cellar | sed -e 's/ (.*//') #  e.g. `/Users/p
 sudo chmod 4755 $mtrlocation/sbin/mtr
 sudo chown root $mtrlocation/sbin/mtr
 
-
 # Install other useful binaries
 brew install the_silver_searcher
 brew install fzf
 
 brew install git
 brew install imagemagick --with-webp
+
 # Node
 brew install node # This installs `npm` too using the recommended installation method
 npm install -g yarn
+
+# Ruby & RVM
+brew install ruby
+curl -sSL https://get.rvm.io | bash
 
 brew install pv
 brew install rename
