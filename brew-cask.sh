@@ -8,6 +8,8 @@ brew tap caskroom/drivers
 # daily
 brew cask install 1password
 brew cask install alfred
+brew cask install mailmate
+brew cask install wire
 
 # dev
 brew cask install iterm2-beta
