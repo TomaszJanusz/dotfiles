@@ -26,6 +26,8 @@ brew install fish
 echo "/usr/local/bin/fish" | sudo tee -a /etc/shells
 chsh -s /usr/local/bin/fish
 brew install homebrew/completions/brew-cask-completion
+curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs https://git.io/fisher #fisher package manager
+cd ~/.config/fish && fisher
 
 # run this script when this file changes guy.
 brew install entr
