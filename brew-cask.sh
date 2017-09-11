@@ -47,7 +47,13 @@ brew cask install font-fira-code
 brew tap tomick/homebrew-cask-alternatives
 brew cask install setapp
 
-
+echo "Do you wish to install Microsoft Office?"
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) brew cask install microsoft-office; break;;
+        No ) exit;;
+    esac
+done
 
 
 echo "Do you wish to install Logitech Options?"
