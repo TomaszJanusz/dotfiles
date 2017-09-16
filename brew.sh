@@ -25,8 +25,6 @@ brew install fish
 echo "/usr/local/bin/fish" | sudo tee -a /etc/shells
 chsh -s /usr/local/bin/fish
 brew install homebrew/completions/brew-cask-completion
-curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs https://git.io/fisher #fisher package manager
-cd ~/.config/fisherman && fisher
 
 # run this script when this file changes guy.
 brew install entr
@@ -67,3 +65,5 @@ brew install thefuck # find where your command went wrong
 
 # Remove outdated versions from the cellar
 brew cleanup
+
+fish -c "sh fisher.sh" # We are ready to load Fishshell and install addons

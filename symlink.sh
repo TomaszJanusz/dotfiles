@@ -148,7 +148,6 @@ FILES_TO_SYMLINK="$FILES_TO_SYMLINK" # add in vim and the binaries
 
 execute "ln -fs $(pwd)/fish $HOME/.config/fish" "$HOME/.config/fish → $(pwd)/fish"
 
-
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 main() {
