@@ -57,8 +57,15 @@
 	</data>
 	<key>NSTableView Supports v2 KeyBingingTable</key>
 	<true/>
+	<key>NSToolbar Configuration com.apple.NSColorPanel</key>
+	<dict>
+		<key>TB Is Shown</key>
+		<integer>1</integer>
+	</dict>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>-2009 389 918 423 -2560 -240 2560 1417 </string>
+	<string>-2291 -118 796 473 -2560 -240 2560 1418 </string>
+	<key>NSWindow Frame iTerm Window 0</key>
+	<string>-1580 428 570 452 -2560 -240 2560 1418 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -783,26 +790,16 @@
 			<string>/Users/tomaszjanusz</string>
 		</dict>
 	</array>
-	<key>NoSyncCommandHistoryHasEverBeenUsed</key>
-	<true/>
-	<key>NoSyncConfirmShellIntegrationCommand</key>
-	<true/>
-	<key>NoSyncConfirmShellIntegrationCommand_selection</key>
-	<integer>0</integer>
 	<key>NoSyncHaveWarnedAboutPasteConfirmationChange</key>
 	<true/>
-	<key>NoSyncInstallUtilitiesPackage</key>
-	<true/>
-	<key>NoSyncInstallUtilitiesPackage_selection</key>
-	<integer>0</integer>
 	<key>NoSyncInstallationId</key>
-	<string>72BCCC0F-6588-401C-B276-6230BFA9E26F</string>
+	<string>0379D3DE-11B7-4710-8A6C-DB62F2EDB748</string>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
 	<integer>0</integer>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
-	<real>524368719.90535802</real>
+	<real>527247556.461209</real>
 	<key>PointerActions</key>
 	<dict>
 		<key>Button,1,1,,</key>
@@ -838,12 +835,18 @@
 	</dict>
 	<key>PrefsCustomFolder</key>
 	<string>/Users/tomaszjanusz/dotfiles/perfs/iTerm</string>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
 	<key>SUFeedAlternateAppNameKey</key>
 	<string>iTerm</string>
 	<key>SUFeedURL</key>
-	<string>https://iterm2.com/appcasts/final.xml?shard=63</string>
+	<string>https://iterm2.com/appcasts/final.xml?shard=55</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
+	<key>SULastCheckTime</key>
+	<date>2017-09-16T09:43:53Z</date>
+	<key>SUSendProfileInfo</key>
+	<false/>
 	<key>ShowBookmarkName</key>
 	<true/>
 	<key>StretchTabsToFillBar</key>
@@ -857,6 +860,6 @@
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
 	<key>iTerm Version</key>
-	<string>3.1.beta.6</string>
+	<string>3.1.beta.10</string>
 </dict>
 </plist>
