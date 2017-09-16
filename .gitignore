@@ -4,3 +4,4 @@ fisherman/*.fish
 fisherman/*
 !fisherman/fishfile
 fish/functions/fisher.fish
+.DS_Store
