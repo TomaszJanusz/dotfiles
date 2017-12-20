@@ -8,6 +8,8 @@
 	<integer>0</integer>
 	<key>AppleSmoothFixedFontsSizeThreshold</key>
 	<integer>1</integer>
+	<key>AppleWindowTabbingMode</key>
+	<string>manual</string>
 	<key>AutoHideTmuxClientSession</key>
 	<false/>
 	<key>Default Bookmark Guid</key>
@@ -62,10 +64,14 @@
 		<key>TB Is Shown</key>
 		<integer>1</integer>
 	</dict>
+	<key>NSWindow Frame SUUpdateAlert</key>
+	<string>3210 829 620 392 2560 240 1920 1178 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>-2291 -118 796 473 -2560 -240 2560 1418 </string>
+	<string>-2291 -74 770 429 -2560 -240 2560 1418 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>-1580 428 570 452 -2560 -240 2560 1418 </string>
+	<string>3052 560 570 475 2560 240 1920 1178 </string>
+	<key>NSWindow Frame iTerm Window 1</key>
+	<string>614 573 570 622 0 0 2560 1418 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -790,6 +796,8 @@
 			<string>/Users/tomaszjanusz</string>
 		</dict>
 	</array>
+	<key>NoSyncCommandHistoryHasEverBeenUsed</key>
+	<true/>
 	<key>NoSyncHaveWarnedAboutPasteConfirmationChange</key>
 	<true/>
 	<key>NoSyncInstallationId</key>
@@ -798,6 +806,8 @@
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
 	<integer>0</integer>
+	<key>NoSyncPermissionToShowTip</key>
+	<false/>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
 	<real>527247556.461209</real>
 	<key>PointerActions</key>
@@ -835,6 +845,8 @@
 	</dict>
 	<key>PrefsCustomFolder</key>
 	<string>/Users/tomaszjanusz/dotfiles/perfs/iTerm</string>
+	<key>SUAutomaticallyUpdate</key>
+	<true/>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedAlternateAppNameKey</key>
@@ -844,7 +856,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-09-16T09:43:53Z</date>
+	<date>2017-09-29T08:43:20Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowBookmarkName</key>
@@ -860,6 +872,6 @@
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
 	<key>iTerm Version</key>
-	<string>3.1.beta.10</string>
+	<string>3.1.2</string>
 </dict>
 </plist>

@@ -1,7 +1,21 @@
-fish/conf.d/*
-fish/fishd.*
-fisherman/*.fish
-fisherman/*
-!fisherman/fishfile
-fish/functions/fisher.fish
+# git credential file
+.gitconfig.local
+
+
+# no thx
+node_modules
+
+# Folder view configuration files
 .DS_Store
+Desktop.ini
+
+# Thumbnail cache files
+._*
+Thumbs.db
+
+# Files that might appear on external disks
+.Spotlight-V100
+.Trashes
+
+# Compiled Python files
+*.pyc

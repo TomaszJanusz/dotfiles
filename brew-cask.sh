@@ -7,8 +7,7 @@ brew tap caskroom/drivers
 
 # daily
 brew cask install 1password
-# brew cask install alfred // goodbye, old friend.
-brew cask install launchbar
+brew cask install alfred
 brew cask install mailmate
 brew cask install wire
 
@@ -23,23 +22,20 @@ brew cask install visual-studio-code
 brew cask install dash
 
 # Grapic
-brew cask install adobe-photoshop-cc
-brew cask install adobe-illustrator-cc
+brew cask install adobe-creative-cloud
 brew cask install sketch
 brew cask install sketch-toolbox
 
 # browsers
 brew cask install google-chrome-canary
+brew cask install google-chrome
 brew cask install firefoxnightly
-# brew cask install webkit-nightly
-# brew cask install chromium
-# brew cask install torbrowser
+brew cask install firefox
+brew cask install opera
 
 # less often
 brew cask install gpgtools
-
-# pleasure 
-brew cask install spotify
+brew cask install docker
 
 # fonts
 brew tap caskroom/fonts 
@@ -72,6 +68,3 @@ select yn in "Yes" "No"; do
         No ) exit;;
     esac
 done
-
-
-# Wire @TODO: https://github.com/caskroom/homebrew-cask/issues/23884

@@ -20,11 +20,16 @@ brew install findutils
 # GNU `sed`, overwriting the built-in `sed`
 brew install gnu-sed --with-default-names
 
-# Note: don’t forget to add `/usr/local/bin/bash` to `/etc/shells` before running `chsh`.
-brew install fish
-echo "/usr/local/bin/fish" | sudo tee -a /etc/shells
-chsh -s /usr/local/bin/fish
 brew install homebrew/completions/brew-cask-completion
+
+brew install zsh
+brew install zsh-autosuggestions
+brew install zsh-completions
+export ZSH="$HOME/dotfiles/oh-my-zsh"; sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+brew install zsh-syntax-highlighting
+brew install zsh-history-substring-search
+brew install zsh-navigation-tools
+brew install zsh-syntax-highlighting
 
 # run this script when this file changes guy.
 brew install entr
@@ -34,7 +39,7 @@ brew install z
 brew install mtr
 
 # allow mtr to run without sudo
-mtrlocation=$(brew info mtr | grep Cellar | sed -e 's/ (.*//') #  e.g. `/Users/paulirish/.homebrew/Cellar/mtr/0.86`
+mtrlocation=$(brew info mtr | grep Cellar | sed -e 's/ (.*//')
 sudo chmod 4755 $mtrlocation/sbin/mtr
 sudo chown root $mtrlocation/sbin/mtr
 
@@ -47,7 +52,7 @@ brew install imagemagick --with-webp
 
 # Node
 brew install node # This installs `npm` too using the recommended installation method
-npm install -g yarn
+brew install yarn
 
 # Ruby & RVM
 brew install ruby
@@ -65,5 +70,3 @@ brew install thefuck # find where your command went wrong
 
 # Remove outdated versions from the cellar
 brew cleanup
-
-fish -c "sh fisher.sh" # We are ready to load Fishshell and install addons
