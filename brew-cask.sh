@@ -41,8 +41,18 @@ brew cask install docker
 brew tap caskroom/fonts 
 brew cask install font-fira-code
 
-brew tap tomick/homebrew-cask-alternatives
+# brew tap tomick/homebrew-cask-alternatives
 brew cask install setapp
+
+echo "Do you wish to install .NET Core SDK?"
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) brew cask install dotnet-sdk; break;;
+        No ) exit;;
+    esac
+done
+
+
 
 echo "Do you wish to install Microsoft Office?"
 select yn in "Yes" "No"; do
