@@ -68,5 +68,7 @@ brew install pidcat   # colored logcat guy
 brew install ncdu # find where your diskspace went
 brew install thefuck # find where your command went wrong
 
+brew install go
+
 # Remove outdated versions from the cellar
 brew cleanup
