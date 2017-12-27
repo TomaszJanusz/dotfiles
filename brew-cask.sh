@@ -32,10 +32,12 @@ brew cask install google-chrome
 brew cask install firefoxnightly
 brew cask install firefox
 brew cask install opera
+brew cask install vivaldi-snapshot
 
 # less often
 brew cask install gpgtools
 brew cask install docker
+brew cask install kitematic
 
 # fonts
 brew tap caskroom/fonts 
