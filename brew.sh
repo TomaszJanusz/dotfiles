@@ -22,14 +22,22 @@ brew install gnu-sed --with-default-names
 
 brew install homebrew/completions/brew-cask-completion
 
-brew install zsh
-brew install zsh-autosuggestions
-brew install zsh-completions
-export ZSH="$HOME/dotfiles/oh-my-zsh"; sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-brew install zsh-syntax-highlighting
-brew install zsh-history-substring-search
-brew install zsh-navigation-tools
-brew install zsh-syntax-highlighting
+echo "Do you wish to install ZSH and Oh My Zsh extensions?"
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) sh ./zsh.sh; break;;
+        No ) exit;;
+    esac
+done
+
+echo "Do you wish to install Fish Shell and extensions?"
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) sh ./fish.sh; break;;
+        No ) exit;;
+    esac
+done
+
 
 # run this script when this file changes guy.
 brew install entr

@@ -19,5 +19,11 @@ Thumbs.db
 
 # Compiled Python files
 *.pyc
+
+# Oh My Zsh
 oh-my-zsh/*
 !oh-my-zsh/.gitkeep
+
+# FishShell
+fish/fishd.*
+omf/install/*

@@ -1,0 +1,16 @@
+package bang-bang
+package brew
+package bundler
+package foreign-env
+package gem
+package https://github.com/zimski/ssh_agent
+package node-binpath
+package nvm
+package osx
+package pbcopy
+package rails
+package rvm
+package touchrunner
+package yarn-binpath
+package z
+theme robbyrussell
