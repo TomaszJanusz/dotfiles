@@ -10,7 +10,6 @@ package osx
 package pbcopy
 package rails
 package rvm
-package touchrunner
 package yarn-binpath
 package z
 theme robbyrussell
