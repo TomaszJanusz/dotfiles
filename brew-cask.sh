@@ -28,11 +28,11 @@ brew cask install sketch-toolbox
 
 # browsers
 brew cask install google-chrome-canary
-brew cask install google-chrome
+# brew cask install google-chrome
 brew cask install firefoxnightly
 brew cask install firefox
-brew cask install opera
-brew cask install vivaldi-snapshot
+# brew cask install opera
+# brew cask install vivaldi-snapshot
 
 # less often
 brew cask install gpgtools
