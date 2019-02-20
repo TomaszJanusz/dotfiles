@@ -28,16 +28,19 @@ brew cask install sketch-toolbox
 
 # browsers
 brew cask install google-chrome-canary
-# brew cask install google-chrome
+brew cask install google-chrome
 brew cask install firefoxnightly
 brew cask install firefox
-# brew cask install opera
+brew cask install opera
 # brew cask install vivaldi-snapshot
 
 # less often
 brew cask install gpgtools
 brew cask install docker
 brew cask install kitematic
+
+# OSX Quick look
+brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook qlvideo
 
 # fonts
 brew tap caskroom/fonts 
@@ -50,7 +53,7 @@ echo "Do you wish to install .NET Core SDK?"
 select yn in "Yes" "No"; do
     case $yn in
         Yes ) brew cask install dotnet-sdk; break;;
-        No ) exit;;
+        No ) break;;
     esac
 done
 
@@ -60,7 +63,7 @@ echo "Do you wish to install Microsoft Office?"
 select yn in "Yes" "No"; do
     case $yn in
         Yes ) brew cask install microsoft-office; break;;
-        No ) exit;;
+        No ) break;;
     esac
 done
 
@@ -69,7 +72,7 @@ echo "Do you wish to install Logitech Options?"
 select yn in "Yes" "No"; do
     case $yn in
         Yes ) brew cask install logitech-options; break;;
-        No ) exit;;
+        No ) break;;
     esac
 done
 
@@ -77,6 +80,6 @@ echo "Do you wish to install Brother Printer Drivers?"
 select yn in "Yes" "No"; do
     case $yn in
         Yes ) brew cask install brotherprinterdrivers; break;;
-        No ) exit;;
+        No ) break;;
     esac
 done

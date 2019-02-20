@@ -22,19 +22,12 @@ brew install gnu-sed --with-default-names
 
 brew install homebrew/completions/brew-cask-completion
 
-# echo "Do you wish to install ZSH and Oh My Zsh extensions?"
-# select yn in "Yes" "No"; do
-#     case $yn in
-#         Yes ) sh ./zsh.sh;;
-#         No ) break;;
-#     esac
-# done
 
 echo "Do you wish to install Fish Shell and extensions?"
 select yn in "Yes" "No"; do
     case $yn in
-        Yes ) sh ./fish.sh ;;
-        No ) break;;
+        Yes ) sh ./fish.sh; break;;
+        No ) exit;;
     esac
 done
 
@@ -77,6 +70,9 @@ brew install ncdu # find where your diskspace went
 brew install thefuck # find where your command went wrong
 
 brew install go
+brew install tmux
+
+brew install wifi-password
 
 # Remove outdated versions from the cellar
 brew cleanup
