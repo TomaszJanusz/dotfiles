@@ -21,10 +21,10 @@ brew cask install tower
 brew cask install visual-studio-code
 brew cask install dash
 
-# Grapic
-brew cask install adobe-creative-cloud
-brew cask install sketch
-brew cask install sketch-toolbox
+# Graphics
+# brew cask install adobe-creative-cloud
+# brew cask install sketch
+# brew cask install sketch-toolbox
 
 # browsers
 brew cask install google-chrome-canary
@@ -32,6 +32,7 @@ brew cask install google-chrome
 brew cask install firefoxnightly
 brew cask install firefox
 brew cask install opera
+brew cask install brave-beta
 # brew cask install vivaldi-snapshot
 
 # less often
