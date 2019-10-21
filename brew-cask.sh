@@ -2,8 +2,8 @@
 
 
 # Install native apps
-brew tap caskroom/versions
-brew tap caskroom/drivers
+brew tap homebrew/cask-versions
+brew tap homebrew/cask-drivers
 
 # daily
 brew cask install 1password
