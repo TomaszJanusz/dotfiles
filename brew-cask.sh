@@ -4,6 +4,7 @@
 # Install native apps
 brew tap homebrew/cask-versions
 brew tap homebrew/cask-drivers
+brew tap homebrew/fonts 
 
 # daily
 brew cask install 1password
@@ -29,14 +30,14 @@ brew cask install dash
 # browsers
 brew cask install google-chrome-canary
 brew cask install google-chrome
-brew cask install firefoxnightly
+brew cask install firefox-nightly
 brew cask install firefox
 brew cask install opera
-brew cask install brave-beta
+brew cask install brave-browser-beta
 # brew cask install vivaldi-snapshot
 
 # less often
-brew cask install gpgtools
+brew cask install gpg-suite
 brew cask install docker
 brew cask install kitematic
 
@@ -44,7 +45,6 @@ brew cask install kitematic
 brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook qlvideo
 
 # fonts
-brew tap caskroom/fonts 
 brew cask install font-fira-code
 
 # brew tap tomick/homebrew-cask-alternatives
