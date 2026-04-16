@@ -1,0 +1,40 @@
+#!/bin/bash
+set -euo pipefail
+
+FISH_PATH="{{ .brewprefix }}/bin/fish"
+OMF_PATH="$HOME/.local/share/omf"
+OMF_CONFIG_PATH="$HOME/.config/omf"
+
+if [ ! -x "$FISH_PATH" ]; then
+    echo "Fish binary not found at $FISH_PATH" >&2
+    exit 1
+fi
+
+# Add fish to allowed shells if not already there
+if ! grep -q "$FISH_PATH" /etc/shells; then
+    echo "Adding fish to /etc/shells (requires sudo)..."
+    echo "$FISH_PATH" | sudo tee -a /etc/shells
+fi
+
+# Set fish as default shell
+if [ "$SHELL" != "$FISH_PATH" ]; then
+    echo "Setting fish as default shell..."
+    chsh -s "$FISH_PATH"
+fi
+
+# Install Oh My Fish if not already installed
+if [ ! -d "$OMF_PATH" ]; then
+    echo "Installing Oh My Fish..."
+    OMF_INSTALL_SCRIPT="$(mktemp)"
+    trap 'rm -f "$OMF_INSTALL_SCRIPT"' EXIT
+    curl -fsSL https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install > "$OMF_INSTALL_SCRIPT"
+    "$FISH_PATH" "$OMF_INSTALL_SCRIPT" --noninteractive --path="$OMF_PATH" --config="$OMF_CONFIG_PATH"
+fi
+
+# Install OMF packages from bundle
+if [ -f "$OMF_CONFIG_PATH/bundle" ]; then
+    echo "Installing OMF packages..."
+    "$FISH_PATH" -c 'type -q omf; and omf install'
+fi
+
+echo "Fish shell setup complete."

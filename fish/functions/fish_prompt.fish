@@ -1,1 +1,0 @@
-/Users/tomaszjanusz/dotfiles/omf/install/themes/robbyrussell/fish_prompt.fish

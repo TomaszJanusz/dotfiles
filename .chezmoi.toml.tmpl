@@ -1,0 +1,56 @@
+{{- $name := promptStringOnce . "name" "Git user name" "Tomasz Janusz" -}}
+{{- $email := promptStringOnce . "email" "Git email" "tomasz.janusz@gmail.com" -}}
+{{- $signingkey := promptStringOnce . "signingkey" "SSH signing key (public)" "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPOWCi6L+bMTfPFhYU2045cpFeYA3spmaaqMPth6o1B/" -}}
+{{- $useAntigravity := promptBoolOnce . "use_antigravity" "Add Antigravity to PATH" false -}}
+
+{{- /* Compute brew prefix based on architecture */ -}}
+{{- $brewprefix := "/opt/homebrew" -}}
+{{- if eq .chezmoi.arch "amd64" -}}
+{{-   $brewprefix = "/usr/local" -}}
+{{- end -}}
+
+{{- /* === STEP 1: Select package groups === */ -}}
+{{- $groups := output "gum" "choose" "--no-limit" "--header" "Select package groups to install:" "--selected" "dev-tools,productivity,media,security,utils,macos-extras" "dev-tools" "productivity" "media" "security" "utils" "macos-extras" -}}
+
+{{- /* === STEP 2: Per-group package selection === */ -}}
+
+{{- $devPkgs := "" -}}
+{{- if contains "dev-tools" $groups -}}
+{{-   $devPkgs = output "gum" "choose" "--no-limit" "--header" "Dev tools (deselect what you don't need):" "--selected" "webstorm,zed,visual-studio-code,karabiner-elements,dash" "webstorm" "zed" "visual-studio-code" "karabiner-elements" "dash" "go" "alfred" -}}
+{{- end -}}
+
+{{- $prodPkgs := "" -}}
+{{- if contains "productivity" $groups -}}
+{{-   $prodPkgs = output "gum" "choose" "--no-limit" "--header" "Productivity apps:" "--selected" "obsidian,notion,mailmate,claude,chatgpt,popclip,rectangle-pro" "obsidian" "notion" "mailmate" "claude" "chatgpt" "popclip" "rectangle-pro" -}}
+{{- end -}}
+
+{{- $mediaPkgs := "" -}}
+{{- if contains "media" $groups -}}
+{{-   $mediaPkgs = output "gum" "choose" "--no-limit" "--header" "Media tools:" "--selected" "vlc,handbrake,transmission" "vlc" "handbrake" "transmission" "downie" "camtasia" "snagit" -}}
+{{- end -}}
+
+{{- $secPkgs := "" -}}
+{{- if contains "security" $groups -}}
+{{-   $secPkgs = output "gum" "choose" "--no-limit" "--header" "Security & Network:" "--selected" "gpg-suite,lulu,signal" "gpg-suite" "lulu" "signal" "tunnelbear" "windscribe" -}}
+{{- end -}}
+
+{{- $utilsPkgs := "" -}}
+{{- if contains "utils" $groups -}}
+{{-   $utilsPkgs = output "gum" "choose" "--no-limit" "--header" "Utilities:" "--selected" "tmux,ncdu,thefuck,pearcleaner,cyberduck" "tmux" "ncdu" "thefuck" "pearcleaner" "cyberduck" "balenaetcher" -}}
+{{- end -}}
+
+{{- $macosExtras := "" -}}
+{{- if contains "macos-extras" $groups -}}
+{{-   $macosExtras = output "gum" "choose" "--no-limit" "--header" "macOS extras:" "--selected" "qlmarkdown,mas-amphetamine,mas-infuse" "qlmarkdown" "mas-amphetamine" "mas-infuse" "mas-turn-off-lights" -}}
+{{- end -}}
+
+{{- /* Merge all selections */ -}}
+{{- $allPkgs := printf "%s\n%s\n%s\n%s\n%s\n%s" $devPkgs $prodPkgs $mediaPkgs $secPkgs $utilsPkgs $macosExtras -}}
+
+[data]
+    name = {{ $name | quote }}
+    email = {{ $email | quote }}
+    signingkey = {{ $signingkey | quote }}
+    brewprefix = {{ $brewprefix | quote }}
+    use_antigravity = {{ $useAntigravity }}
+    packages = {{ $allPkgs | quote }}

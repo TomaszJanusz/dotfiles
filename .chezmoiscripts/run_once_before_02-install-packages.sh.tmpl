@@ -1,0 +1,13 @@
+#!/bin/bash
+set -euo pipefail
+
+# Ensure brew is in PATH
+eval "$({{ .brewprefix }}/bin/brew shellenv)"
+
+echo "Installing packages from Brewfile..."
+brew bundle --global --no-lock
+
+echo "Cleaning up..."
+brew cleanup
+
+echo "Packages installed."

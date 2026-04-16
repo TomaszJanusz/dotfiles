@@ -1,0 +1,169 @@
+# ══════════════════════════════════════
+# Core (always installed)
+# ══════════════════════════════════════
+
+# Shell & dotfiles
+brew "fish"
+brew "chezmoi"
+brew "gum"
+
+# Git
+brew "git"
+brew "git-lfs"
+brew "gh"
+
+# Search & navigation
+brew "fzf"
+brew "ripgrep"
+brew "fd"
+brew "zoxide"
+brew "tree"
+
+# JS/TS runtimes
+brew "node"
+brew "bun"
+brew "deno"
+
+# Security
+brew "1password-cli"
+
+# GNU tools
+brew "coreutils"
+brew "moreutils"
+brew "findutils"
+brew "gnu-sed"
+
+# Core casks
+cask "ghostty"
+cask "raycast"
+cask "orbstack"
+cask "1password"
+cask "fork"
+cask "google-chrome"
+cask "firefox"
+cask "font-fira-code"
+cask "tailscale-app"
+
+# ══════════════════════════════════════
+# Optional — per-package from gum selector
+# ══════════════════════════════════════
+
+# --- Dev tools ---
+{{ if contains "webstorm" .packages -}}
+cask "webstorm"
+{{ end -}}
+{{ if contains "zed" .packages -}}
+cask "zed"
+{{ end -}}
+{{ if contains "visual-studio-code" .packages -}}
+cask "visual-studio-code"
+{{ end -}}
+{{ if contains "karabiner-elements" .packages -}}
+cask "karabiner-elements"
+{{ end -}}
+{{ if contains "dash" .packages -}}
+cask "dash"
+{{ end -}}
+{{ if contains "go" .packages -}}
+brew "go"
+{{ end -}}
+{{ if contains "alfred" .packages -}}
+cask "alfred"
+{{ end -}}
+
+# --- Productivity ---
+{{ if contains "obsidian" .packages -}}
+cask "obsidian"
+{{ end -}}
+{{ if contains "notion" .packages -}}
+cask "notion"
+{{ end -}}
+{{ if contains "mailmate" .packages -}}
+cask "mailmate"
+{{ end -}}
+{{ if contains "claude" .packages -}}
+cask "claude"
+{{ end -}}
+{{ if contains "chatgpt" .packages -}}
+cask "chatgpt"
+{{ end -}}
+{{ if contains "popclip" .packages -}}
+cask "popclip"
+{{ end -}}
+{{ if contains "rectangle-pro" .packages -}}
+cask "rectangle-pro"
+{{ end -}}
+
+# --- Media ---
+{{ if contains "vlc" .packages -}}
+cask "vlc"
+{{ end -}}
+{{ if contains "handbrake" .packages -}}
+cask "handbrake"
+{{ end -}}
+{{ if contains "transmission" .packages -}}
+cask "transmission"
+{{ end -}}
+{{ if contains "downie" .packages -}}
+cask "downie"
+{{ end -}}
+{{ if contains "camtasia" .packages -}}
+cask "camtasia"
+{{ end -}}
+{{ if contains "snagit" .packages -}}
+cask "snagit"
+{{ end -}}
+
+# --- Security & Network ---
+{{ if contains "gpg-suite" .packages -}}
+cask "gpg-suite"
+{{ end -}}
+{{ if contains "lulu" .packages -}}
+cask "lulu"
+{{ end -}}
+{{ if contains "signal" .packages -}}
+cask "signal"
+{{ end -}}
+{{ if contains "tunnelbear" .packages -}}
+cask "tunnelbear"
+{{ end -}}
+{{ if contains "windscribe" .packages -}}
+cask "windscribe"
+{{ end -}}
+
+# --- Utils ---
+{{ if contains "tmux" .packages -}}
+brew "tmux"
+{{ end -}}
+{{ if contains "ncdu" .packages -}}
+brew "ncdu"
+{{ end -}}
+{{ if contains "thefuck" .packages -}}
+brew "thefuck"
+{{ end -}}
+{{ if contains "pearcleaner" .packages -}}
+cask "pearcleaner"
+{{ end -}}
+{{ if contains "cyberduck" .packages -}}
+cask "cyberduck"
+{{ end -}}
+{{ if contains "balenaetcher" .packages -}}
+cask "balenaetcher"
+{{ end -}}
+
+# --- macOS extras ---
+{{ if contains "qlmarkdown" .packages -}}
+cask "qlmarkdown"
+{{ end -}}
+{{ if or (contains "mas-amphetamine" .packages) (contains "mas-infuse" .packages) (contains "mas-turn-off-lights" .packages) -}}
+brew "mas"
+{{ end -}}
+{{ if contains "mas-amphetamine" .packages -}}
+mas "Amphetamine", id: 937984704
+{{ end -}}
+{{ if contains "mas-infuse" .packages -}}
+mas "Infuse", id: 1136220934
+{{ end -}}
+{{ if contains "mas-turn-off-lights" .packages -}}
+mas "Turn Off the Lights for Safari", id: 1273998507
+{{ end -}}

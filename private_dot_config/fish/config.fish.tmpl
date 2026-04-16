@@ -1,0 +1,19 @@
+set -g -x PATH $PATH {{ .brewprefix }}/bin
+set -g -x PATH $PATH $HOME/.local/bin/
+set -xg OMF_CONFIG $HOME/.config/omf
+set -g -x fish_greeting ''
+set -g -x DOTFILES_DIR $HOME/.local/share/chezmoi
+set -g -x EDITOR 'nano'
+
+# 1Password SSH agent
+set -gx SSH_AUTH_SOCK ~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+
+# Zoxide (cd replacement)
+zoxide init fish | source
+
+# Tokescale
+alias tokescale="bunx tokscale@latest submit"
+{{ if .use_antigravity }}
+# Antigravity
+fish_add_path {{ .chezmoi.homeDir }}/.antigravity/antigravity/bin
+{{ end }}
