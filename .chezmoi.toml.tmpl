@@ -36,7 +36,7 @@
 
 {{- $utilsPkgs := "" -}}
 {{- if contains "utils" $groups -}}
-{{-   $utilsPkgs = output "gum" "choose" "--no-limit" "--header" "Utilities:" "--selected" "tmux,ncdu,thefuck,pearcleaner,cyberduck" "tmux" "ncdu" "thefuck" "pearcleaner" "cyberduck" "balenaetcher" -}}
+{{-   $utilsPkgs = output "gum" "choose" "--no-limit" "--header" "Utilities:" "--selected" "tmux,ncdu,thefuck,pearcleaner,cyberduck" "tmux" "cmux" "ncdu" "thefuck" "pearcleaner" "cyberduck" "balenaetcher" -}}
 {{- end -}}
 
 {{- $macosExtras := "" -}}

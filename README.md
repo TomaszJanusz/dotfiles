@@ -36,7 +36,7 @@ chezmoi init --apply tjanuszdev
 - Productivity (Obsidian, Notion, MailMate, Claude, ChatGPT, PopClip, Rectangle Pro)
 - Media (VLC, HandBrake, Transmission, Downie, Camtasia, Snagit)
 - Security (GPG Suite, LuLu, Signal, TunnelBear, Windscribe)
-- Utils (tmux, ncdu, thefuck, Pearcleaner, Cyberduck, balenaEtcher)
+- Utils (tmux, cmux, ncdu, thefuck, Pearcleaner, Cyberduck, balenaEtcher)
 - macOS extras (QuickLook plugins, App Store apps via mas)
 - Browsers (Google Chrome, Firefox, Firefox Developer Edition, Brave Browser Beta)
 - AI (OpenCode, Gemini CLI, Codex, Claude Code)

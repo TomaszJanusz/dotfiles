@@ -133,6 +133,9 @@ cask "windscribe"
 {{ if contains "tmux" .packages -}}
 brew "tmux"
 {{ end -}}
+{{ if contains "cmux" .packages -}}
+brew "cmux"
+{{ end -}}
 {{ if contains "ncdu" .packages -}}
 brew "ncdu"
 {{ end -}}
