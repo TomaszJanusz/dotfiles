@@ -29,7 +29,7 @@ chezmoi init --apply tjanuszdev
 
 **Runtimes:** Node, Bun, Deno
 
-**Apps:** Ghostty, Raycast, OrbStack, Fork, 1Password, Chrome, Firefox
+**Core apps:** Ghostty, Raycast, OrbStack, Fork, 1Password
 
 **Optional groups** (selected during setup via interactive TUI):
 - Dev tools (WebStorm, Zed, VS Code, Karabiner, Dash, Go, Alfred)
@@ -38,6 +38,8 @@ chezmoi init --apply tjanuszdev
 - Security (GPG Suite, LuLu, Signal, TunnelBear, Windscribe)
 - Utils (tmux, ncdu, thefuck, Pearcleaner, Cyberduck, balenaEtcher)
 - macOS extras (QuickLook plugins, App Store apps via mas)
+- Browsers (Google Chrome, Firefox, Firefox Developer Edition, Brave Browser Beta)
+- AI (OpenCode, Gemini CLI, Codex, Claude Code)
 
 ## Usage
 

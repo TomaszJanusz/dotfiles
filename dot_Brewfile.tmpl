@@ -39,8 +39,6 @@ cask "raycast"
 cask "orbstack"
 cask "1password"
 cask "fork"
-cask "google-chrome"
-cask "firefox"
 cask "font-fira-code"
 cask "tailscale-app"
 
@@ -166,4 +164,32 @@ mas "Infuse", id: 1136220934
 {{ end -}}
 {{ if contains "mas-turn-off-lights" .packages -}}
 mas "Turn Off the Lights for Safari", id: 1273998507
+{{ end -}}
+
+# --- Browsers ---
+{{ if contains "google-chrome" .packages -}}
+cask "google-chrome"
+{{ end -}}
+{{ if contains "firefox" .packages -}}
+cask "firefox"
+{{ end -}}
+{{ if contains "firefox@developer-edition" .packages -}}
+cask "firefox@developer-edition"
+{{ end -}}
+{{ if contains "brave-browser@beta" .packages -}}
+cask "brave-browser@beta"
+{{ end -}}
+
+# --- AI ---
+{{ if contains "opencode" .packages -}}
+brew "anomalyco/tap/opencode"
+{{ end -}}
+{{ if contains "gemini-cli" .packages -}}
+brew "gemini-cli"
+{{ end -}}
+{{ if contains "codex" .packages -}}
+cask "codex"
+{{ end -}}
+{{ if contains "claude-code" .packages -}}
+cask "claude-code"
 {{ end -}}

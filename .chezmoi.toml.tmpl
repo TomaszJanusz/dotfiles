@@ -10,7 +10,7 @@
 {{- end -}}
 
 {{- /* === STEP 1: Select package groups === */ -}}
-{{- $groups := output "gum" "choose" "--no-limit" "--header" "Select package groups to install:" "--selected" "dev-tools,productivity,media,security,utils,macos-extras" "dev-tools" "productivity" "media" "security" "utils" "macos-extras" -}}
+{{- $groups := output "gum" "choose" "--no-limit" "--header" "Select package groups to install:" "--selected" "dev-tools,productivity,media,security,utils,macos-extras,browsers,AI" "dev-tools" "productivity" "media" "security" "utils" "macos-extras" "browsers" "AI" -}}
 
 {{- /* === STEP 2: Per-group package selection === */ -}}
 
@@ -44,8 +44,18 @@
 {{-   $macosExtras = output "gum" "choose" "--no-limit" "--header" "macOS extras:" "--selected" "qlmarkdown,mas-amphetamine,mas-infuse" "qlmarkdown" "mas-amphetamine" "mas-infuse" "mas-turn-off-lights" -}}
 {{- end -}}
 
+{{- $browserPkgs := "" -}}
+{{- if contains "browsers" $groups -}}
+{{-   $browserPkgs = output "gum" "choose" "--no-limit" "--header" "Browsers:" "--selected" "google-chrome,firefox" "google-chrome" "firefox" "firefox@developer-edition" "brave-browser@beta" -}}
+{{- end -}}
+
+{{- $aiPkgs := "" -}}
+{{- if contains "AI" $groups -}}
+{{-   $aiPkgs = output "gum" "choose" "--no-limit" "--header" "AI tools:" "--selected" "opencode,gemini-cli,codex,claude-code" "opencode" "gemini-cli" "codex" "claude-code" -}}
+{{- end -}}
+
 {{- /* Merge all selections */ -}}
-{{- $allPkgs := printf "%s\n%s\n%s\n%s\n%s\n%s" $devPkgs $prodPkgs $mediaPkgs $secPkgs $utilsPkgs $macosExtras -}}
+{{- $allPkgs := printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" $devPkgs $prodPkgs $mediaPkgs $secPkgs $utilsPkgs $macosExtras $browserPkgs $aiPkgs -}}
 
 [data]
     name = {{ $name | quote }}
