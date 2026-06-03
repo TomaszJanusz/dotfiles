@@ -1,0 +1,67 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "ui_font_weight": 400.0,
+  "agent_buffer_font_size": 15.0,
+  "icon_theme": {
+    "mode": "system",
+    "light": "Colored Zed Icons Theme Light",
+    "dark": "Colored Zed Icons Theme Dark"
+  },
+  "format_on_save": "off",
+  "agent_servers": {
+    "github-copilot-cli": {
+      "type": "registry"
+    },
+    "codex-acp": {
+      "type": "registry"
+    }
+  },
+  "project_panel": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "dock": "left"
+  },
+  "collaboration_panel": {
+    "dock": "left"
+  },
+  "git_panel": {
+    "dock": "left"
+  },
+  "edit_predictions": {
+    "provider": "zed"
+  },
+  "session": {
+    "trust_all_worktrees": true
+  },
+  "agent": {
+    "dock": "right",
+    "default_model": {
+      "effort": "high",
+      "provider": "copilot_chat",
+      "model": "gpt-5.4",
+      "enable_thinking": false
+    },
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "ui_font_size": 16.0,
+  "buffer_font_size": 15.0,
+  "theme": "Gruvbox Dark",
+  "auto_install_extensions": {
+    "catppuccin-blur": true,
+    "colored-zed-icons-theme": true,
+    "fish": true,
+    "git-firefly": true,
+    "html": true,
+    "toml": true,
+    "xml": true
+  }
+}

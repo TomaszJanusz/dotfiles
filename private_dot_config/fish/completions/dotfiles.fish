@@ -1,0 +1,15 @@
+set -l cmds update up apply a diff d status st save commit c push sync edit e log l path reset-once help
+
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "update"     -d "Pobierz z GitHub i odśwież configi w \$HOME"
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "apply"      -d "Odśwież configi w \$HOME ze stanu repo (bez pull)"
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "diff"       -d "Pokaż co zmieni apply zanim go uruchomisz"
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "status"     -d "Lista plików w \$HOME różniących się od repo"
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "save"       -d "Wciągnij lokalne zmiany configów do repo (bez commita)"
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "commit"     -d "Wciągnij i zacommituj zmiany w repo (bez pusha)"
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "push"       -d "Wyślij zacommitowane zmiany do GitHub"
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "sync"       -d "Pełen cykl: pull + apply + wciągnij + status"
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "edit"       -d "Otwórz plik bezpośrednio w repo do edycji"
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "log"        -d "Ostatnie 20 commitów w repo"
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "path"       -d "Wypisz ścieżkę do source dir repo"
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "reset-once" -d "Pozwól skryptom run_once_* odpalić się jeszcze raz"
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "help"       -d "Pomoc"

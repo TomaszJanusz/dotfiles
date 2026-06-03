@@ -1,0 +1,118 @@
+#!/bin/bash
+set -euo pipefail
+
+cmd="${1:-help}"
+shift || true
+
+source_dir() { chezmoi source-path; }
+
+case "$cmd" in
+  update|up)
+    chezmoi update -v
+    ;;
+
+  apply|a)
+    chezmoi apply -v
+    ;;
+
+  diff|d)
+    chezmoi diff
+    ;;
+
+  status|st)
+    chezmoi status
+    ;;
+
+  save)
+    # Pull current state of managed files into source dir, show what changed
+    chezmoi re-add
+    git -C "$(source_dir)" status -sb
+    ;;
+
+  commit|c)
+    if [ $# -eq 0 ]; then
+      echo "usage: dotfiles commit <message>" >&2
+      exit 2
+    fi
+    chezmoi re-add
+    src="$(source_dir)"
+    git -C "$src" add -A
+    git -C "$src" commit -m "$*"
+    ;;
+
+  push)
+    git -C "$(source_dir)" push
+    ;;
+
+  sync)
+    # Full bidirectional cycle: pull remote, apply, capture local
+    chezmoi update -v
+    chezmoi re-add
+    git -C "$(source_dir)" status -sb
+    ;;
+
+  edit|e)
+    chezmoi edit "$@"
+    ;;
+
+  log|l)
+    git -C "$(source_dir)" log --oneline -20
+    ;;
+
+  path)
+    source_dir
+    ;;
+
+  reset-once)
+    # Force run_once_* scripts to re-run on next apply
+    chezmoi state delete-bucket --bucket=scriptState
+    echo "scriptState cleared — run_once_* scripts will re-execute on next apply"
+    ;;
+
+  help|--help|-h|"")
+    cat <<EOF
+dotfiles — zarządzanie dotfiles przez chezmoi + git
+
+Sytuacja: są DWA źródła stanu — repo (source) w \$(dotfiles path) i
+realne configi w \$HOME. Te komendy synchronizują je w jedną lub drugą stronę.
+
+Użycie:
+  dotfiles <komenda> [argumenty]
+
+DOM → REPO (zapis lokalnych zmian do repo, bez wysyłki do GitHub)
+  save              Wciągnij obecny stan configów z \$HOME do repo. Pokaż git status.
+                    NIE commituje, NIE pusha. Bezpieczne "preview before commit".
+  commit, c <msg>   To samo co save + git commit z podanym message. Nadal NIE pusha.
+  push              Wyślij już zacommitowane zmiany na GitHub.
+
+REPO → DOM (przyjęcie zmian z repo do realnych configów)
+  update, up        Pobierz commity z GitHub i odśwież pliki w \$HOME.
+                    Najczęstsza komenda po włączeniu drugiej maszyny.
+  apply, a          Odśwież pliki w \$HOME ze stanu repo (BEZ pobierania z GitHub).
+                    Użyteczne po lokalnej edycji szablonu w repo.
+
+INSPEKCJA (nic nie zmienia)
+  diff, d           Pokaż co zmieni "apply" w plikach w \$HOME przed wykonaniem.
+  status, st        Lista plików w \$HOME różniących się od stanu repo.
+  log, l            Ostatnie 20 commitów w repo.
+  path              Wypisz ścieżkę do source dir (\$(dotfiles path)).
+
+OPERACJE ŁĄCZONE
+  sync              Pełen cykl: update (z GitHub) → save (lokalne zmiany do repo) → status.
+                    Pokazuje co przyleciało z remote i co masz do zacommitowania.
+  edit, e <file>    Otwórz plik w repo do edycji (a nie kopię w \$HOME).
+                    Po zamknięciu edytora chezmoi nałoży zmiany.
+  reset-once        Wyczyść licznik "raz w życiu" dla skryptów run_once_*.
+                    Następny apply odpali je ponownie (np. ponowna instalacja extensions).
+  help              Ten tekst.
+
+Repo: $(source_dir 2>/dev/null || echo "<chezmoi nieskonfigurowany>")
+EOF
+    ;;
+
+  *)
+    echo "unknown command: $cmd" >&2
+    echo "try: dotfiles help" >&2
+    exit 2
+    ;;
+esac

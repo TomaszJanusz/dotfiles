@@ -151,6 +151,28 @@ Apple blokuje iPhone Mirroring w UE z powodu DMA. Istnieje workaround ([timi2506
 
 **Świadomie nie integrujemy tego z chezmoi** — wymaga reboota do recovery, manual UI step, wyłącza Apple Pay i część DRM, nie jest idempotentne. Jeśli zdecydujesz się włączyć, zrób to jednorazowo poza pipeline i akceptuj koszt re-aplikowania przy update'ach.
 
+## `dotfiles` CLI
+
+Skrót do typowych operacji na repo. Wrapper na chezmoi + git. Instalowany w `~/.local/bin/dotfiles` (PATH ustawiony w fish config).
+
+```bash
+dotfiles update         # pull z remote + chezmoi apply
+dotfiles diff           # co się zmieni przy apply
+dotfiles save           # re-add zmodyfikowane configi, pokaż git status (BEZ commita)
+dotfiles commit "msg"   # re-add + git commit -m msg (nadal bez push)
+dotfiles push           # git push
+dotfiles sync           # pełny cykl: update + re-add + git status
+dotfiles edit <file>    # chezmoi edit
+dotfiles log            # ostatnie commity w source
+dotfiles path           # ścieżka do source dir
+dotfiles reset-once     # wyczyść scriptState — run_once_* polecą ponownie
+dotfiles help
+```
+
+Fish completion załączony (`~/.config/fish/completions/dotfiles.fish`) plus funkcja `dfcd` która robi `cd $(chezmoi source-path)` w bieżącym shellu.
+
+**Świadomy design:** `save` i `commit` **nie pushują**. `push` jest osobny — żeby nie zapakować przypadkiem sekretu albo śmiecia. Dwukierunkowy `sync` (`update + re-add`) też nie commituje, tylko pokazuje status — finalny commit/push robisz świadomie.
+
 ## Auto-cleanup Downloads & Screenshots (opt-in)
 
 Włączane promptem `cleanup_old_files` przy `chezmoi init` (default `true`).
