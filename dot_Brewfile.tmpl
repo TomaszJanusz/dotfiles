@@ -38,6 +38,11 @@ brew "gnu-sed"
 brew "dockutil"
 {{ end -}}
 
+# Cleanup dependency
+{{ if .cleanup_old_files -}}
+brew "trash"
+{{ end -}}
+
 # Core casks
 cask "ghostty"
 cask "raycast"

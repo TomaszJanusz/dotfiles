@@ -1,0 +1,15 @@
+{{ if and (eq .chezmoi.os "darwin") .cleanup_old_files -}}
+#!/bin/bash
+set -euo pipefail
+
+AGENT="$HOME/Library/LaunchAgents/com.tjanusz.cleanup-old-files.plist"
+LABEL="gui/$UID/com.tjanusz.cleanup-old-files"
+
+mkdir -p "$HOME/.local/state"
+
+# bootout first (idempotent: removes existing registration if any)
+launchctl bootout "$LABEL" 2>/dev/null || true
+launchctl bootstrap "gui/$UID" "$AGENT"
+
+echo "Cleanup LaunchAgent loaded — runs daily at 03:00."
+{{ end -}}

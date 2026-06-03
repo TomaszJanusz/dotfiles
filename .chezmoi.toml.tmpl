@@ -3,6 +3,7 @@
 {{- $signingkey := promptStringOnce . "signingkey" "SSH signing key (public)" "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPOWCi6L+bMTfPFhYU2045cpFeYA3spmaaqMPth6o1B/" -}}
 {{- $useAntigravity := promptBoolOnce . "use_antigravity" "Add Antigravity to PATH" false -}}
 {{- $debloatMacos := promptBoolOnce . "debloat_macos" "Debloat macOS (clean Dock, mute bundled apps)" true -}}
+{{- $cleanupOldFiles := promptBoolOnce . "cleanup_old_files" "Auto-trash files >30 days in Downloads/Screenshots (daily at 03:00)" true -}}
 
 {{- /* Compute brew prefix based on architecture */ -}}
 {{- $brewprefix := "/opt/homebrew" -}}
@@ -75,4 +76,5 @@
     brewprefix = {{ $brewprefix | quote }}
     use_antigravity = {{ $useAntigravity }}
     debloat_macos = {{ $debloatMacos }}
+    cleanup_old_files = {{ $cleanupOldFiles }}
     packages = {{ $allPkgs | quote }}

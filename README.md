@@ -151,6 +151,26 @@ Apple blokuje iPhone Mirroring w UE z powodu DMA. Istnieje workaround ([timi2506
 
 **Świadomie nie integrujemy tego z chezmoi** — wymaga reboota do recovery, manual UI step, wyłącza Apple Pay i część DRM, nie jest idempotentne. Jeśli zdecydujesz się włączyć, zrób to jednorazowo poza pipeline i akceptuj koszt re-aplikowania przy update'ach.
 
+## Auto-cleanup Downloads & Screenshots (opt-in)
+
+Włączane promptem `cleanup_old_files` przy `chezmoi init` (default `true`).
+
+Pliki starsze niż 30 dni w `~/Downloads/` i `~/Screenshots/` są **przenoszone do Trasha** (nie usuwane) codziennie o 03:00 przez LaunchAgent `com.tjanusz.cleanup-old-files`.
+
+- skrypt: `~/.local/bin/cleanup-old-files.sh`
+- agent: `~/Library/LaunchAgents/com.tjanusz.cleanup-old-files.plist`
+- log: `~/.local/state/cleanup-old-files.log`
+- pomija: hidden files (`.DS_Store`), `*.crdownload`, `*.part`, `*.partial`, `*.download`
+- używa: `brew "trash"` (recoverable z `~/.Trash`)
+
+Threshold zmienisz edytując `AGE_DAYS` w skrypcie. Wyłączenie ad-hoc:
+
+```bash
+launchctl bootout gui/$UID/com.tjanusz.cleanup-old-files
+```
+
+Trwałe wyłączenie: w `chezmoi.toml` zmień `cleanup_old_files = false`, potem `chezmoi apply` (usunie skrypt + plist; agent trzeba zbootować ręcznie powyższą komendą).
+
 ## Post-apply manual step — Finder sidebar
 
 `chezmoi apply` tworzy `~/Developer` (Finder sam doda ikonę młotka — magic-name) i `~/Screenshots` (ustawiony jako default location dla CMD+Shift+3/4/5). **Sidebar Findera musisz wpiąć ręcznie:**

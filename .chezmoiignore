@@ -14,3 +14,7 @@ LICENSE
 {{ if not (contains "karabiner-krux" .packages) -}}
 .config/karabiner/assets/complex_modifications/krux_leftctrl_or_caps_arrows.json
 {{ end -}}
+{{ if not .cleanup_old_files -}}
+.local/bin/cleanup-old-files.sh
+Library/LaunchAgents/com.tjanusz.cleanup-old-files.plist
+{{ end -}}
