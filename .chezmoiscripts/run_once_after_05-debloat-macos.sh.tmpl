@@ -8,13 +8,16 @@ if ! command -v dockutil >/dev/null 2>&1; then
   echo "dockutil not found — skipping Dock cleanup (Brewfile may not have run yet)."
 else
   DOCK_REMOVE=(
-    "Launchpad" "Mail" "Maps" "Photos" "FaceTime" "Contacts"
+    "Launchpad" "Safari" "Mail" "Maps" "Photos" "FaceTime" "Contacts"
     "Calendar" "Reminders" "Notes" "Freeform" "TV" "Music"
     "Podcasts" "News" "Stocks" "Keynote" "Numbers" "Pages"
     "App Store" "Find My" "Home" "Books" "iPhone Mirroring"
+    "Games" "System Settings" "System Preferences"
   )
   for app in "${DOCK_REMOVE[@]}"; do
-    dockutil --remove "$app" --no-restart 2>/dev/null || true
+    if ! dockutil --remove "$app" --no-restart 2>/dev/null; then
+        echo "  (skip: '$app' not in Dock)"
+    fi
   done
 fi
 
