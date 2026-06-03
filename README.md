@@ -7,7 +7,7 @@ macOS development environment managed with [chezmoi](https://www.chezmoi.io/).
 On a fresh macOS, run:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/TomaszJanusz/dotfiles/master/bootstrap.sh | bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/TomaszJanusz/dotfiles/master/bootstrap.sh)"
 ```
 
 Or step by step:

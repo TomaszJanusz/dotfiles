@@ -1,11 +1,14 @@
 #!/bin/bash
 set -euo pipefail
 
-# Re-attach stdin to controlling TTY when invoked via `curl | bash` —
-# otherwise sudo can't prompt for password, gum/chezmoi prompts can't read input,
-# and `read` returns immediately on EOF instead of waiting.
-if [ ! -t 0 ] && [ -e /dev/tty ]; then
-    exec </dev/tty
+# IMPORTANT: this script must be invoked via `bash -c "$(curl ...)"` — NOT
+# `curl ... | bash`. In the pipe form, bash reads its script body from stdin,
+# so we can't redirect stdin to /dev/tty for sudo/gum/chezmoi prompts without
+# truncating the script itself.
+if [ ! -t 0 ]; then
+    echo "stdin is not a TTY." >&2
+    echo "Run via: /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/TomaszJanusz/dotfiles/master/bootstrap.sh)\"" >&2
+    exit 1
 fi
 
 echo "=== Dotfiles Bootstrap ==="
