@@ -26,6 +26,30 @@ defaults write NSGlobalDomain KeyRepeat -int 2
 defaults write NSGlobalDomain InitialKeyRepeat -int 15
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
+# F-row keys act as standard F1..F12 by default (media keys require Fn).
+# Required for Cmd+F4 Spotlight shortcut below to fire without Fn.
+defaults write NSGlobalDomain com.apple.keyboard.fnState -bool true
+
+# Spotlight: remap from Cmd+Space to Cmd+F4.
+# symbolichotkeys key 64 = Spotlight menu. F4 keycode=118, Cmd modifier=1048576.
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "<dict>
+    <key>enabled</key><true/>
+    <key>value</key><dict>
+        <key>type</key><string>standard</string>
+        <key>parameters</key><array>
+            <integer>65535</integer>
+            <integer>118</integer>
+            <integer>1048576</integer>
+        </array>
+    </dict>
+</dict>"
+
+# Lock Screen: Cmd+L (system-wide menu item override).
+# Some apps will intercept Cmd+L on their level (browsers focus address bar).
+# Polish locale label is "Zablokuj ekran"; both are set so it works regardless of system language.
+defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add "Lock Screen" "@l"
+defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add "Zablokuj ekran" "@l"
+
 # ── Trackpad: enable tap-to-click on Magic Trackpad AND built-in ──
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
@@ -47,7 +71,8 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
 # Apply changes
-killall Finder Dock SystemUIServer 2>/dev/null || true
+killall Finder Dock SystemUIServer cfprefsd 2>/dev/null || true
 
 echo "macOS defaults configured."
+echo "Note: Spotlight (Cmd+F4) and Lock Screen (Cmd+L) shortcuts require logout/login to take full effect."
 {{ end -}}
