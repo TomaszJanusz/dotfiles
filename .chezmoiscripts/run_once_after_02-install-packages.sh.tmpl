@@ -4,8 +4,17 @@ set -euo pipefail
 # Ensure brew is in PATH
 eval "$({{ .brewprefix }}/bin/brew shellenv)"
 
-echo "Installing packages from Brewfile..."
-brew bundle install --global
+BREWFILE="$HOME/.Brewfile"
+
+if [ ! -f "$BREWFILE" ]; then
+    echo "Error: $BREWFILE not found." >&2
+    echo "chezmoi should have created it from dot_Brewfile.tmpl during apply." >&2
+    echo "Run: chezmoi managed | grep -i brewfile" >&2
+    exit 1
+fi
+
+echo "Installing packages from $BREWFILE..."
+brew bundle install --file="$BREWFILE"
 
 echo "Cleaning up..."
 brew cleanup
