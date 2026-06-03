@@ -26,22 +26,25 @@ defaults write NSGlobalDomain KeyRepeat -int 2
 defaults write NSGlobalDomain InitialKeyRepeat -int 15
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
-# F-row keys act as standard F1..F12 by default (media keys require Fn).
-# Required for Cmd+F4 Spotlight shortcut below to fire without Fn.
-defaults write NSGlobalDomain com.apple.keyboard.fnState -bool true
-
-# Spotlight: remap from Cmd+Space to Cmd+F4.
-# symbolichotkeys key 64 = Spotlight menu. F4 keycode=118, Cmd modifier=1048576.
+# Spotlight: remap from Cmd+Space to Option+Cmd+Space.
+# symbolichotkeys key 64 = Spotlight menu.
+# Space char=32, keycode=49, modifiers Option+Cmd = 524288+1048576 = 1572864.
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "<dict>
     <key>enabled</key><true/>
     <key>value</key><dict>
         <key>type</key><string>standard</string>
         <key>parameters</key><array>
-            <integer>65535</integer>
-            <integer>118</integer>
-            <integer>1048576</integer>
+            <integer>32</integer>
+            <integer>49</integer>
+            <integer>1572864</integer>
         </array>
     </dict>
+</dict>"
+
+# Disable key 65 (Show Finder search window) — defaults to Option+Cmd+Space
+# which would conflict with our new Spotlight binding.
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 65 "<dict>
+    <key>enabled</key><false/>
 </dict>"
 
 # Lock Screen: Cmd+L (system-wide menu item override).
@@ -74,5 +77,5 @@ defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 killall Finder Dock SystemUIServer cfprefsd 2>/dev/null || true
 
 echo "macOS defaults configured."
-echo "Note: Spotlight (Cmd+F4) and Lock Screen (Cmd+L) shortcuts require logout/login to take full effect."
+echo "Note: Spotlight (Option+Cmd+Space) and Lock Screen (Cmd+L) shortcuts require logout/login to take full effect."
 {{ end -}}
