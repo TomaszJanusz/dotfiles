@@ -15,6 +15,11 @@ defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 defaults write com.apple.finder _FXShowPosixPathInTitle -bool false
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 
+# New Finder windows open in the home folder instead of Recents.
+# PfHm = Home folder; path is the URL to it.
+defaults write com.apple.finder NewWindowTarget -string "PfHm"
+defaults write com.apple.finder NewWindowTargetPath -string "file://$HOME/"
+
 # ── Dock ──
 defaults write com.apple.dock autohide -bool false
 defaults write com.apple.dock minimize-to-application -bool true
