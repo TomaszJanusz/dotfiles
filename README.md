@@ -150,3 +150,14 @@ Apple blokuje iPhone Mirroring w UE z powodu DMA. Istnieje workaround ([timi2506
 - pełnego ponownego setupu po każdym OS update
 
 **Świadomie nie integrujemy tego z chezmoi** — wymaga reboota do recovery, manual UI step, wyłącza Apple Pay i część DRM, nie jest idempotentne. Jeśli zdecydujesz się włączyć, zrób to jednorazowo poza pipeline i akceptuj koszt re-aplikowania przy update'ach.
+
+## Post-apply manual step — Finder sidebar
+
+`chezmoi apply` tworzy `~/Developer` (Finder sam doda ikonę młotka — magic-name) i `~/Screenshots` (ustawiony jako default location dla CMD+Shift+3/4/5). **Sidebar Findera musisz wpiąć ręcznie:**
+
+1. Otwórz Finder, w pasku bocznym przeciągnij `~/Developer` i `~/Screenshots` do sekcji Favorites
+2. Finder → Settings → Sidebar → zaznacz pozycję z twoją nazwą użytkownika (home folder)
+
+Trwa ~15s, robisz raz na maszynę. Jeśli masz iCloud Drive sync sidebar, ustawienia migrują się między urządzeniami automatycznie.
+
+**Dlaczego nie programatycznie:** `LSSharedFileList` API jest deprecated od 10.11; `sfltool add-item` Apple usunął w 10.13; [`mysides`](https://github.com/mosen/mysides) wycofany z brew (2025-10-13); [`sbedit`](https://github.com/fabienconus/sidebar-editor) (modern Swift, wspiera `.sfl4` z macOS 26) nie jest w brew — wymaga `git clone + swift build` z pełnym Xcode. Manual jest tańszy niż utrzymanie tooling.
