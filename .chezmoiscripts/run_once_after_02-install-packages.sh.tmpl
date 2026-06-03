@@ -13,9 +13,27 @@ if [ ! -f "$BREWFILE" ]; then
     exit 1
 fi
 
-echo "Installing packages from $BREWFILE..."
+FORMULAE=$(grep -cE '^brew '   "$BREWFILE" || true)
+CASKS=$(grep -cE   '^cask '    "$BREWFILE" || true)
+TAPS=$(grep -cE    '^tap '     "$BREWFILE" || true)
+MAS=$(grep -cE     '^mas '     "$BREWFILE" || true)
+TOTAL=$((FORMULAE + CASKS + TAPS + MAS))
+
+cat <<EOF
+Installing $TOTAL packages from $BREWFILE:
+  - $FORMULAE formulae (brew)
+  - $CASKS casks
+  - $TAPS taps
+  - $MAS Mac App Store apps
+
+This typically takes 10-30 minutes on a fresh setup depending on network speed.
+brew will print progress per package below.
+
+EOF
+
 brew bundle install --file="$BREWFILE"
 
+echo
 echo "Cleaning up..."
 brew cleanup
 
