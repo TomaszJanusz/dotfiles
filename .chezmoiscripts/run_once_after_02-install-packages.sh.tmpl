@@ -31,7 +31,9 @@ brew will print progress per package below.
 
 EOF
 
-brew bundle install --file="$BREWFILE"
+HOMEBREW_VERBOSE_USING_DOTS=1 \
+HOMEBREW_DOWNLOAD_CONCURRENCY=1 \
+    brew bundle install --file="$BREWFILE" --verbose
 
 echo
 echo "Cleaning up..."
