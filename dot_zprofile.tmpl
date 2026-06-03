@@ -1,0 +1,31 @@
+# Zsh login shell — environment parity with fish (config.fish.tmpl)
+
+# Homebrew (also exports MANPATH, INFOPATH)
+eval "$({{ .brewprefix }}/bin/brew shellenv)"
+
+# Local user binaries
+export PATH="$PATH:$HOME/.local/bin"
+
+# Editor
+export EDITOR=nano
+
+# Chezmoi source dir (matches fish DOTFILES_DIR)
+export DOTFILES_DIR="$HOME/.local/share/chezmoi"
+
+# OMF config dir (kept so omf-aware tools find it if invoked from zsh)
+export OMF_CONFIG="$HOME/.config/omf"
+
+# 1Password SSH agent socket
+export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+# Zoxide (cd replacement)
+if command -v zoxide >/dev/null 2>&1; then
+    eval "$(zoxide init zsh)"
+fi
+
+# Tokescale
+alias tokescale="bunx tokscale@latest submit"
+{{ if .use_antigravity }}
+# Antigravity
+export PATH="$PATH:{{ .chezmoi.homeDir }}/.antigravity/antigravity/bin"
+{{ end }}
