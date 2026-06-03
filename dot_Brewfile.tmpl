@@ -232,6 +232,12 @@ cask "firefox@developer-edition"
 {{ if contains "brave-browser@beta" .packages -}}
 cask "brave-browser@beta"
 {{ end -}}
+{{ if contains "helium-browser" .packages -}}
+cask "helium-browser"
+{{ end -}}
+{{ if contains "zen" .packages -}}
+cask "zen"
+{{ end -}}
 
 # --- AI ---
 {{ if contains "opencode" .packages -}}
@@ -248,6 +254,9 @@ cask "claude-code"
 {{ end -}}
 {{ if contains "notion-cli" .packages -}}
 brew "4ier/tap/notion-cli"
+{{ end -}}
+{{ if contains "pi-coding-agent" .packages -}}
+brew "pi-coding-agent"
 {{ end -}}
 
 # --- Design ---

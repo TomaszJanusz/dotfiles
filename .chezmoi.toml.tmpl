@@ -48,12 +48,12 @@
 
 {{- $browserPkgs := "" -}}
 {{- if contains "browsers" $groups -}}
-{{-   $browserPkgs = output "gum" "choose" "--no-limit" "--header" "Browsers:" "--selected" "google-chrome,firefox" "google-chrome" "google-chrome@dev" "firefox" "firefox@developer-edition" "brave-browser@beta" -}}
+{{-   $browserPkgs = output "gum" "choose" "--no-limit" "--header" "Browsers:" "--selected" "google-chrome,firefox" "google-chrome" "google-chrome@dev" "firefox" "firefox@developer-edition" "brave-browser@beta" "helium-browser" "zen" -}}
 {{- end -}}
 
 {{- $aiPkgs := "" -}}
 {{- if contains "AI" $groups -}}
-{{-   $aiPkgs = output "gum" "choose" "--no-limit" "--header" "AI tools:" "--selected" "opencode,gemini-cli,codex,claude-code,notion-cli" "opencode" "gemini-cli" "codex" "claude-code" "notion-cli" -}}
+{{-   $aiPkgs = output "gum" "choose" "--no-limit" "--header" "AI tools:" "--selected" "opencode,gemini-cli,codex,claude-code,notion-cli" "opencode" "gemini-cli" "codex" "claude-code" "notion-cli" "pi-coding-agent" -}}
 {{- end -}}
 
 {{- $designPkgs := "" -}}

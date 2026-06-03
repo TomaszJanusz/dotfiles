@@ -5,7 +5,7 @@ set -euo pipefail
 eval "$({{ .brewprefix }}/bin/brew shellenv)"
 
 echo "Installing packages from Brewfile..."
-brew bundle --global --no-lock
+brew bundle install --global
 
 echo "Cleaning up..."
 brew cleanup
