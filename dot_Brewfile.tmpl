@@ -21,8 +21,8 @@ brew "tree"
 
 # JS/TS runtimes
 brew "node"
+brew "pnpm"
 brew "bun"
-brew "deno"
 
 # Security
 brew "1password-cli"
@@ -33,13 +33,19 @@ brew "moreutils"
 brew "findutils"
 brew "gnu-sed"
 
+# Debloat dependency
+{{ if .debloat_macos -}}
+brew "dockutil"
+{{ end -}}
+
 # Core casks
 cask "ghostty"
 cask "raycast"
-cask "orbstack"
 cask "1password"
 cask "fork"
 cask "font-fira-code"
+cask "font-jetbrains-mono"
+cask "font-jetbrains-mono-nerd-font"
 cask "tailscale-app"
 
 # ══════════════════════════════════════
@@ -56,6 +62,9 @@ cask "zed"
 {{ if contains "visual-studio-code" .packages -}}
 cask "visual-studio-code"
 {{ end -}}
+{{ if contains "visual-studio-code@insiders" .packages -}}
+cask "visual-studio-code@insiders"
+{{ end -}}
 {{ if contains "karabiner-elements" .packages -}}
 cask "karabiner-elements"
 {{ end -}}
@@ -67,6 +76,9 @@ brew "go"
 {{ end -}}
 {{ if contains "alfred" .packages -}}
 cask "alfred"
+{{ end -}}
+{{ if contains "orbstack" .packages -}}
+cask "orbstack"
 {{ end -}}
 
 # --- Productivity ---
@@ -111,6 +123,9 @@ cask "camtasia"
 {{ if contains "snagit" .packages -}}
 cask "snagit"
 {{ end -}}
+{{ if contains "eqmac" .packages -}}
+cask "eqmac"
+{{ end -}}
 
 # --- Security & Network ---
 {{ if contains "gpg-suite" .packages -}}
@@ -151,6 +166,33 @@ cask "cyberduck"
 {{ if contains "balenaetcher" .packages -}}
 cask "balenaetcher"
 {{ end -}}
+{{ if contains "yt-dlp" .packages -}}
+brew "yt-dlp"
+{{ end -}}
+{{ if contains "glab" .packages -}}
+brew "glab"
+{{ end -}}
+{{ if contains "tokei" .packages -}}
+brew "tokei"
+{{ end -}}
+{{ if contains "midnight-commander" .packages -}}
+brew "midnight-commander"
+{{ end -}}
+{{ if contains "entr" .packages -}}
+brew "entr"
+{{ end -}}
+{{ if contains "ansible" .packages -}}
+brew "ansible"
+{{ end -}}
+{{ if contains "cloc" .packages -}}
+brew "cloc"
+{{ end -}}
+{{ if contains "fresh" .packages -}}
+brew "sinelaw/fresh/fresh"
+{{ end -}}
+{{ if contains "kaset" .packages -}}
+cask "sozercan/repo/kaset"
+{{ end -}}
 
 # --- macOS extras ---
 {{ if contains "qlmarkdown" .packages -}}
@@ -172,6 +214,9 @@ mas "Turn Off the Lights for Safari", id: 1273998507
 # --- Browsers ---
 {{ if contains "google-chrome" .packages -}}
 cask "google-chrome"
+{{ end -}}
+{{ if contains "google-chrome@dev" .packages -}}
+cask "google-chrome@dev"
 {{ end -}}
 {{ if contains "firefox" .packages -}}
 cask "firefox"
@@ -195,4 +240,15 @@ cask "codex"
 {{ end -}}
 {{ if contains "claude-code" .packages -}}
 cask "claude-code"
+{{ end -}}
+{{ if contains "notion-cli" .packages -}}
+brew "4ier/tap/notion-cli"
+{{ end -}}
+
+# --- Design ---
+{{ if contains "affinity" .packages -}}
+cask "affinity"
+{{ end -}}
+{{ if contains "inkscape" .packages -}}
+cask "inkscape"
 {{ end -}}

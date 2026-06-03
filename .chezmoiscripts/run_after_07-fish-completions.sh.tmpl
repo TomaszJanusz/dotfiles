@@ -1,0 +1,13 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+set -euo pipefail
+
+COMP_DIR="$HOME/.config/fish/completions"
+mkdir -p "$COMP_DIR"
+
+command -v kubectl >/dev/null && kubectl completion fish    > "$COMP_DIR/kubectl.fish" 2>/dev/null || true
+command -v orbctl  >/dev/null && orbctl  completion fish    > "$COMP_DIR/orbctl.fish"  2>/dev/null || true
+command -v docker  >/dev/null && docker  completion fish    > "$COMP_DIR/docker.fish"  2>/dev/null || true
+command -v gh      >/dev/null && gh      completion -s fish > "$COMP_DIR/gh.fish"      2>/dev/null || true
+command -v glab    >/dev/null && glab    completion -s fish > "$COMP_DIR/glab.fish"    2>/dev/null || true
+{{ end -}}

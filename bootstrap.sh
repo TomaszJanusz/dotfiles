@@ -34,7 +34,7 @@ brew install gum chezmoi
 echo ""
 echo "Starting dotfiles setup..."
 echo ""
-chezmoi init --apply tjanuszdev
+chezmoi init --apply https://github.com/TomaszJanusz/dotfiles.git
 
 echo ""
 echo "=== Bootstrap complete! ==="

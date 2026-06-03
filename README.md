@@ -7,7 +7,7 @@ macOS development environment managed with [chezmoi](https://www.chezmoi.io/).
 On a fresh macOS, run:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/tjanuszdev/dotfiles/master/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/TomaszJanusz/dotfiles/master/bootstrap.sh | bash
 ```
 
 Or step by step:
@@ -18,7 +18,7 @@ Or step by step:
 brew install gum chezmoi
 
 # Initialize and apply dotfiles (interactive package selector)
-chezmoi init --apply tjanuszdev
+chezmoi init --apply https://github.com/TomaszJanusz/dotfiles.git
 ```
 
 ## What's included
@@ -32,14 +32,15 @@ chezmoi init --apply tjanuszdev
 **Core apps:** Ghostty, Raycast, OrbStack, Fork, 1Password
 
 **Optional groups** (selected during setup via interactive TUI):
-- Dev tools (WebStorm, Zed, VS Code, Karabiner, Dash, Go, Alfred)
+- Dev tools (WebStorm, Zed, VS Code, VS Code Insiders, Karabiner, Dash, Go, Alfred)
 - Productivity (Obsidian, Notion, MailMate, Claude, ChatGPT, PopClip, Rectangle Pro)
-- Media (VLC, HandBrake, Transmission, Downie, Camtasia, Snagit)
+- Media (VLC, HandBrake, Transmission, Downie, Camtasia, Snagit, eqMac)
 - Security (GPG Suite, LuLu, Signal, TunnelBear, Windscribe)
 - Utils (tmux, cmux, ncdu, thefuck, Pearcleaner, Cyberduck, balenaEtcher)
-- macOS extras (QuickLook plugins, App Store apps via mas)
-- Browsers (Google Chrome, Firefox, Firefox Developer Edition, Brave Browser Beta)
+- macOS extras (QuickLook plugins, App Store apps via mas — incl. Infuse)
+- Browsers (Google Chrome, Google Chrome Dev, Firefox, Firefox Developer Edition, Brave Browser Beta)
 - AI (OpenCode, Gemini CLI, Codex, Claude Code)
+- Design (Affinity v3, Inkscape)
 
 ## Usage
 
@@ -107,9 +108,45 @@ private_dot_config/         # ~/.config/ managed files
   fish/                     # Fish shell config
   omf/                      # Oh My Fish packages
   tmux/                     # tmux config
+dot_agents/                 # ~/.agents/ — Vercel skills source of truth
+  skills/                   # Skill folders (caveman-*, copywriting, etc.)
 .chezmoiscripts/            # Automated setup scripts
   run_once_before_01-*      # Install Homebrew
   run_once_before_02-*      # Install packages (brew bundle)
   run_once_after_03-*       # Setup Fish shell + OMF
   run_once_after_04-*       # Configure macOS defaults
+  run_once_after_05-*       # Debloat macOS (opt-in)
+  run_once_after_06-*       # Symlink ~/.agents/skills/ into per-agent dirs
 ```
+
+## Agent skills (`~/.agents/`)
+
+Skille z `~/.agents/skills/` są źródłem prawdy ([Vercel layout](https://github.com/vercel-labs/skills/blob/main/AGENTS.md)). Po `chezmoi apply`:
+
+- pliki lądują w `~/.agents/skills/{nazwa}/`
+- skrypt `run_once_after_06` tworzy symlinki `~/.{claude,codex,cursor,opencode,zed,gemini-cli,antigravity}/skills/{nazwa}` → `~/.agents/skills/{nazwa}`
+- `.skill-lock.json` jest **ignorowany** — to runtime state z absolutnymi ścieżkami Commander Marketplace, generuje go `npx skills` lokalnie
+
+Żeby dodać nowy skill: skopiuj folder do `dot_agents/skills/` i `chezmoi apply` — symlinki odświeżą się automatycznie.
+
+## macOS debloat (opt-in)
+
+Włączane promptem `debloat_macos` przy `chezmoi init`. Skrypt `run_once_after_05`:
+
+- czyści Dock z bloatu (Mail, Maps, TV, News, Stocks, Freeform, App Store...) przez `dockutil`
+- wyłącza background daemony (`com.apple.newsd`, `stocksd`, `gamed`, `parsecd`, podcast service) przez `launchctl disable` (reversible)
+- wyłącza Siri i Spotlight Suggestions
+- wycina bloat z wyników Spotlight (Music, Movies, Fonts, ...)
+
+**Uwaga:** na Apple Silicon **nie usuwamy** plików `.app` — Signed System Volume to blokuje, a próby psują OS updates. Apps zostają zainstalowane, ale są wyciszone.
+
+## iPhone Mirroring w EU
+
+Apple blokuje iPhone Mirroring w UE z powodu DMA. Istnieje workaround ([timi2506/iphone-mirroring-eu-activate](https://github.com/timi2506/iphone-mirroring-eu-activate)) edytujący `/private/var/db/os_eligibility/eligibility.plist`, ale wymaga:
+
+- wyłączenia SIP (recovery boot + `csrutil disable`)
+- ręcznego `Get Info → Locked` w Finderze, żeby plist nie został nadpisany
+- patcha po stronie iPhone'a (SparseRestore / TrollRestore)
+- pełnego ponownego setupu po każdym OS update
+
+**Świadomie nie integrujemy tego z chezmoi** — wymaga reboota do recovery, manual UI step, wyłącza Apple Pay i część DRM, nie jest idempotentne. Jeśli zdecydujesz się włączyć, zrób to jednorazowo poza pipeline i akceptuj koszt re-aplikowania przy update'ach.

@@ -2,6 +2,7 @@
 {{- $email := promptStringOnce . "email" "Git email" "tomasz.janusz@gmail.com" -}}
 {{- $signingkey := promptStringOnce . "signingkey" "SSH signing key (public)" "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPOWCi6L+bMTfPFhYU2045cpFeYA3spmaaqMPth6o1B/" -}}
 {{- $useAntigravity := promptBoolOnce . "use_antigravity" "Add Antigravity to PATH" false -}}
+{{- $debloatMacos := promptBoolOnce . "debloat_macos" "Debloat macOS (clean Dock, mute bundled apps)" true -}}
 
 {{- /* Compute brew prefix based on architecture */ -}}
 {{- $brewprefix := "/opt/homebrew" -}}
@@ -10,13 +11,13 @@
 {{- end -}}
 
 {{- /* === STEP 1: Select package groups === */ -}}
-{{- $groups := output "gum" "choose" "--no-limit" "--header" "Select package groups to install:" "--selected" "dev-tools,productivity,media,security,utils,macos-extras,browsers,AI" "dev-tools" "productivity" "media" "security" "utils" "macos-extras" "browsers" "AI" -}}
+{{- $groups := output "gum" "choose" "--no-limit" "--header" "Select package groups to install:" "--selected" "dev-tools,productivity,media,security,utils,macos-extras,browsers,AI" "dev-tools" "productivity" "media" "security" "utils" "macos-extras" "browsers" "AI" "design" -}}
 
 {{- /* === STEP 2: Per-group package selection === */ -}}
 
 {{- $devPkgs := "" -}}
 {{- if contains "dev-tools" $groups -}}
-{{-   $devPkgs = output "gum" "choose" "--no-limit" "--header" "Dev tools (deselect what you don't need):" "--selected" "webstorm,zed,visual-studio-code,karabiner-elements,dash" "webstorm" "zed" "visual-studio-code" "karabiner-elements" "dash" "go" "alfred" -}}
+{{-   $devPkgs = output "gum" "choose" "--no-limit" "--header" "Dev tools (deselect what you don't need):" "--selected" "webstorm,zed,visual-studio-code,karabiner-elements,dash,orbstack" "webstorm" "zed" "visual-studio-code" "visual-studio-code@insiders" "karabiner-elements" "dash" "go" "alfred" "orbstack" -}}
 {{- end -}}
 
 {{- $prodPkgs := "" -}}
@@ -26,7 +27,7 @@
 
 {{- $mediaPkgs := "" -}}
 {{- if contains "media" $groups -}}
-{{-   $mediaPkgs = output "gum" "choose" "--no-limit" "--header" "Media tools:" "--selected" "vlc,handbrake,transmission" "vlc" "handbrake" "transmission" "downie" "camtasia" "snagit" -}}
+{{-   $mediaPkgs = output "gum" "choose" "--no-limit" "--header" "Media tools:" "--selected" "vlc,handbrake,transmission" "vlc" "handbrake" "transmission" "downie" "camtasia" "snagit" "eqmac" -}}
 {{- end -}}
 
 {{- $secPkgs := "" -}}
@@ -36,7 +37,7 @@
 
 {{- $utilsPkgs := "" -}}
 {{- if contains "utils" $groups -}}
-{{-   $utilsPkgs = output "gum" "choose" "--no-limit" "--header" "Utilities:" "--selected" "tmux,ncdu,thefuck,pearcleaner,cyberduck" "tmux" "cmux" "ncdu" "thefuck" "pearcleaner" "cyberduck" "balenaetcher" -}}
+{{-   $utilsPkgs = output "gum" "choose" "--no-limit" "--header" "Utilities:" "--selected" "tmux,ncdu,thefuck,pearcleaner,cyberduck" "tmux" "cmux" "ncdu" "thefuck" "pearcleaner" "cyberduck" "balenaetcher" "yt-dlp" "glab" "tokei" "midnight-commander" "entr" "ansible" "cloc" "fresh" "kaset" -}}
 {{- end -}}
 
 {{- $macosExtras := "" -}}
@@ -46,16 +47,26 @@
 
 {{- $browserPkgs := "" -}}
 {{- if contains "browsers" $groups -}}
-{{-   $browserPkgs = output "gum" "choose" "--no-limit" "--header" "Browsers:" "--selected" "google-chrome,firefox" "google-chrome" "firefox" "firefox@developer-edition" "brave-browser@beta" -}}
+{{-   $browserPkgs = output "gum" "choose" "--no-limit" "--header" "Browsers:" "--selected" "google-chrome,firefox" "google-chrome" "google-chrome@dev" "firefox" "firefox@developer-edition" "brave-browser@beta" -}}
 {{- end -}}
 
 {{- $aiPkgs := "" -}}
 {{- if contains "AI" $groups -}}
-{{-   $aiPkgs = output "gum" "choose" "--no-limit" "--header" "AI tools:" "--selected" "opencode,gemini-cli,codex,claude-code" "opencode" "gemini-cli" "codex" "claude-code" -}}
+{{-   $aiPkgs = output "gum" "choose" "--no-limit" "--header" "AI tools:" "--selected" "opencode,gemini-cli,codex,claude-code,notion-cli" "opencode" "gemini-cli" "codex" "claude-code" "notion-cli" -}}
+{{- end -}}
+
+{{- $designPkgs := "" -}}
+{{- if contains "design" $groups -}}
+{{-   $designPkgs = output "gum" "choose" "--no-limit" "--header" "Design tools:" "--selected" "" "affinity" "inkscape" -}}
+{{- end -}}
+
+{{- $karabinerRules := "" -}}
+{{- if contains "karabiner-elements" $devPkgs -}}
+{{-   $karabinerRules = output "gum" "choose" "--no-limit" "--header" "Karabiner rules (per active mapping):" "--selected" "" "karabiner-krux" "karabiner-k380" "karabiner-coma" -}}
 {{- end -}}
 
 {{- /* Merge all selections */ -}}
-{{- $allPkgs := printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" $devPkgs $prodPkgs $mediaPkgs $secPkgs $utilsPkgs $macosExtras $browserPkgs $aiPkgs -}}
+{{- $allPkgs := printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" $devPkgs $prodPkgs $mediaPkgs $secPkgs $utilsPkgs $macosExtras $browserPkgs $aiPkgs $designPkgs $karabinerRules -}}
 
 [data]
     name = {{ $name | quote }}
@@ -63,4 +74,5 @@
     signingkey = {{ $signingkey | quote }}
     brewprefix = {{ $brewprefix | quote }}
     use_antigravity = {{ $useAntigravity }}
+    debloat_macos = {{ $debloatMacos }}
     packages = {{ $allPkgs | quote }}

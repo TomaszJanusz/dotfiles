@@ -1,0 +1,407 @@
+{
+  "description": "Tryb A: LeftCtrl+Alt,/ ,Menu,RightCtrl => ←↑↓→; Tryb B: CapsLock ON i Alt,/ ,Menu,RightCtrl => ←↑↓→ (tylko Krux VID1452/PID591)",
+  "manipulators": [
+    {
+      "conditions": [
+        {
+          "identifiers": [
+            {
+              "product_id": 591,
+              "vendor_id": 1452
+            }
+          ],
+          "type": "device_if"
+        }
+      ],
+      "from": {
+        "key_code": "left_option",
+        "modifiers": {
+          "mandatory": [
+            "left_control"
+          ],
+          "optional": [
+            "any"
+          ]
+        }
+      },
+      "to": [
+        {
+          "key_code": "left_arrow"
+        }
+      ],
+      "type": "basic"
+    },
+    {
+      "conditions": [
+        {
+          "identifiers": [
+            {
+              "product_id": 591,
+              "vendor_id": 1452
+            }
+          ],
+          "type": "device_if"
+        }
+      ],
+      "from": {
+        "key_code": "right_option",
+        "modifiers": {
+          "mandatory": [
+            "left_control"
+          ],
+          "optional": [
+            "any"
+          ]
+        }
+      },
+      "to": [
+        {
+          "key_code": "left_arrow"
+        }
+      ],
+      "type": "basic"
+    },
+    {
+      "conditions": [
+        {
+          "identifiers": [
+            {
+              "product_id": 591,
+              "vendor_id": 1452
+            }
+          ],
+          "type": "device_if"
+        }
+      ],
+      "from": {
+        "key_code": "left_arrow",
+        "modifiers": {
+          "mandatory": [
+            "left_control"
+          ],
+          "optional": [
+            "any"
+          ]
+        }
+      },
+      "to": [
+        {
+          "key_code": "left_arrow"
+        }
+      ],
+      "type": "basic"
+    },
+    {
+      "conditions": [
+        {
+          "identifiers": [
+            {
+              "product_id": 591,
+              "vendor_id": 1452
+            }
+          ],
+          "type": "device_if"
+        }
+      ],
+      "from": {
+        "key_code": "slash",
+        "modifiers": {
+          "mandatory": [
+            "left_control"
+          ],
+          "optional": [
+            "any"
+          ]
+        }
+      },
+      "to": [
+        {
+          "key_code": "up_arrow"
+        }
+      ],
+      "type": "basic"
+    },
+    {
+      "conditions": [
+        {
+          "identifiers": [
+            {
+              "product_id": 591,
+              "vendor_id": 1452
+            }
+          ],
+          "type": "device_if"
+        }
+      ],
+      "from": {
+        "key_code": "application",
+        "modifiers": {
+          "mandatory": [
+            "left_control"
+          ],
+          "optional": [
+            "any"
+          ]
+        }
+      },
+      "to": [
+        {
+          "key_code": "down_arrow"
+        }
+      ],
+      "type": "basic"
+    },
+    {
+      "conditions": [
+        {
+          "identifiers": [
+            {
+              "product_id": 591,
+              "vendor_id": 1452
+            }
+          ],
+          "type": "device_if"
+        }
+      ],
+      "from": {
+        "key_code": "menu",
+        "modifiers": {
+          "mandatory": [
+            "left_control"
+          ],
+          "optional": [
+            "any"
+          ]
+        }
+      },
+      "to": [
+        {
+          "key_code": "down_arrow"
+        }
+      ],
+      "type": "basic"
+    },
+    {
+      "conditions": [
+        {
+          "identifiers": [
+            {
+              "product_id": 591,
+              "vendor_id": 1452
+            }
+          ],
+          "type": "device_if"
+        }
+      ],
+      "from": {
+        "key_code": "right_control",
+        "modifiers": {
+          "mandatory": [
+            "left_control"
+          ],
+          "optional": [
+            "any"
+          ]
+        }
+      },
+      "to": [
+        {
+          "key_code": "right_arrow"
+        }
+      ],
+      "type": "basic"
+    },
+    {
+      "conditions": [
+        {
+          "identifiers": [
+            {
+              "product_id": 591,
+              "vendor_id": 1452
+            }
+          ],
+          "type": "device_if"
+        },
+        {
+          "name": "caps_lock",
+          "type": "modifier",
+          "value": 1
+        }
+      ],
+      "from": {
+        "key_code": "left_option",
+        "modifiers": {
+          "optional": [
+            "any"
+          ]
+        }
+      },
+      "to": [
+        {
+          "key_code": "left_arrow"
+        }
+      ],
+      "type": "basic"
+    },
+    {
+      "conditions": [
+        {
+          "identifiers": [
+            {
+              "product_id": 591,
+              "vendor_id": 1452
+            }
+          ],
+          "type": "device_if"
+        },
+        {
+          "name": "caps_lock",
+          "type": "modifier",
+          "value": 1
+        }
+      ],
+      "from": {
+        "key_code": "right_option",
+        "modifiers": {
+          "optional": [
+            "any"
+          ]
+        }
+      },
+      "to": [
+        {
+          "key_code": "left_arrow"
+        }
+      ],
+      "type": "basic"
+    },
+    {
+      "conditions": [
+        {
+          "identifiers": [
+            {
+              "product_id": 591,
+              "vendor_id": 1452
+            }
+          ],
+          "type": "device_if"
+        },
+        {
+          "name": "caps_lock",
+          "type": "modifier",
+          "value": 1
+        }
+      ],
+      "from": {
+        "key_code": "slash",
+        "modifiers": {
+          "optional": [
+            "any"
+          ]
+        }
+      },
+      "to": [
+        {
+          "key_code": "up_arrow"
+        }
+      ],
+      "type": "basic"
+    },
+    {
+      "conditions": [
+        {
+          "identifiers": [
+            {
+              "product_id": 591,
+              "vendor_id": 1452
+            }
+          ],
+          "type": "device_if"
+        },
+        {
+          "name": "caps_lock",
+          "type": "modifier",
+          "value": 1
+        }
+      ],
+      "from": {
+        "key_code": "application",
+        "modifiers": {
+          "optional": [
+            "any"
+          ]
+        }
+      },
+      "to": [
+        {
+          "key_code": "down_arrow"
+        }
+      ],
+      "type": "basic"
+    },
+    {
+      "conditions": [
+        {
+          "identifiers": [
+            {
+              "product_id": 591,
+              "vendor_id": 1452
+            }
+          ],
+          "type": "device_if"
+        },
+        {
+          "name": "caps_lock",
+          "type": "modifier",
+          "value": 1
+        }
+      ],
+      "from": {
+        "key_code": "menu",
+        "modifiers": {
+          "optional": [
+            "any"
+          ]
+        }
+      },
+      "to": [
+        {
+          "key_code": "down_arrow"
+        }
+      ],
+      "type": "basic"
+    },
+    {
+      "conditions": [
+        {
+          "identifiers": [
+            {
+              "product_id": 591,
+              "vendor_id": 1452
+            }
+          ],
+          "type": "device_if"
+        },
+        {
+          "name": "caps_lock",
+          "type": "modifier",
+          "value": 1
+        }
+      ],
+      "from": {
+        "key_code": "right_control",
+        "modifiers": {
+          "optional": [
+            "any"
+          ]
+        }
+      },
+      "to": [
+        {
+          "key_code": "right_arrow"
+        }
+      ],
+      "type": "basic"
+    }
+  ]
+}

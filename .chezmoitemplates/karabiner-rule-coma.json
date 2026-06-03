@@ -1,0 +1,22 @@
+{
+  "description": "Remap Coma",
+  "manipulators": [
+    {
+      "from": {
+        "key_code": "period",
+        "modifiers": {
+          "mandatory": [
+            "left_control"
+          ]
+        }
+      },
+      "to": [
+        {
+          "key_code": "comma",
+          "repeat": true
+        }
+      ],
+      "type": "basic"
+    }
+  ]
+}

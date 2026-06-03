@@ -1,0 +1,40 @@
+{
+  "description": "Na Logitech K380 zamień Ctrl+Tab na Ctrl+Cmd+Space",
+  "manipulators": [
+    {
+      "conditions": [
+        {
+          "identifiers": [
+            {
+              "is_keyboard": true,
+              "product_id": 45890,
+              "vendor_id": 1133
+            }
+          ],
+          "type": "device_if"
+        }
+      ],
+      "from": {
+        "key_code": "tab",
+        "modifiers": {
+          "mandatory": [
+            "control"
+          ],
+          "optional": [
+            "any"
+          ]
+        }
+      },
+      "to": [
+        {
+          "key_code": "spacebar",
+          "modifiers": [
+            "control",
+            "command"
+          ]
+        }
+      ],
+      "type": "basic"
+    }
+  ]
+}

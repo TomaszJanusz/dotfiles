@@ -2,3 +2,15 @@ README.md
 bootstrap.sh
 LICENSE
 .github/
+.DS_Store
+**/.DS_Store
+.agents/.skill-lock.json
+{{ if not (contains "notion-cli" .packages) -}}
+.agents/skills/notion-cli/**
+{{ end -}}
+{{ if not (contains "karabiner-elements" .packages) -}}
+.config/karabiner/**
+{{ end -}}
+{{ if not (contains "karabiner-krux" .packages) -}}
+.config/karabiner/assets/complex_modifications/krux_leftctrl_or_caps_arrows.json
+{{ end -}}

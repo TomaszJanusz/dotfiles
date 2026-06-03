@@ -1,0 +1,32 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+set -euo pipefail
+
+SKILLS_DIR="$HOME/.agents/skills"
+
+if [ ! -d "$SKILLS_DIR" ]; then
+  echo "No $SKILLS_DIR — skipping per-agent symlinks."
+  exit 0
+fi
+
+AGENTS=(claude codex cursor opencode zed gemini-cli antigravity)
+
+for agent in "${AGENTS[@]}"; do
+  target="$HOME/.$agent/skills"
+  mkdir -p "$target"
+
+  # Usuń dangling/stale symlinki (skill mógł zostać odznaczony i zniknąć z ~/.agents/skills/)
+  for link in "$target"/*; do
+    [ -L "$link" ] || continue
+    [ -e "$link" ] || rm -f "$link"
+  done
+
+  for skill in "$SKILLS_DIR"/*/; do
+    [ -d "$skill" ] || continue
+    name=$(basename "$skill")
+    ln -sfn "$skill" "$target/$name"
+  done
+done
+
+echo "Agent skill symlinks refreshed."
+{{ end -}}
