@@ -28,5 +28,5 @@ palette = 15=#ffffff
 keybind = global:cmd+`=toggle_quick_terminal
 macos-titlebar-style = tabs
 macos-option-as-alt = true
-macos-icon = microchip
+macos-icon = chalkboard
 macos-option-as-alt = false
