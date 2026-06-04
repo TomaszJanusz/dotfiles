@@ -54,7 +54,7 @@
 
 {{- $aiPkgs := "" -}}
 {{- if contains "AI" $groups -}}
-{{-   $aiPkgs = output "gum" "choose" "--no-limit" "--header" "AI tools:" "--selected" "opencode,gemini-cli,codex,claude-code,notion-cli" "opencode" "gemini-cli" "codex" "codex-app" "claude-code" "notion-cli" "pi-coding-agent" -}}
+{{-   $aiPkgs = output "gum" "choose" "--no-limit" "--header" "AI tools:" "--selected" "opencode,gemini-cli,codex,claude-code,notion-cli" "opencode" "gemini-cli" "codex" "codex-app" "claude-code" "notion-cli" "pi-coding-agent" "t3-code" -}}
 {{- end -}}
 
 {{- $designPkgs := "" -}}

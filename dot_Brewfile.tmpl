@@ -252,6 +252,9 @@ cask "codex"
 {{ if has "codex-app" (splitList "\n" .packages) -}}
 cask "codex-app"
 {{ end -}}
+{{ if has "t3-code" (splitList "\n" .packages) -}}
+cask "t3-code"
+{{ end -}}
 {{ if contains "claude-code" .packages -}}
 cask "claude-code"
 {{ end -}}
