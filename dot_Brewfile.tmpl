@@ -246,8 +246,11 @@ brew "anomalyco/tap/opencode"
 {{ if contains "gemini-cli" .packages -}}
 brew "gemini-cli"
 {{ end -}}
-{{ if contains "codex" .packages -}}
+{{ if has "codex" (splitList "\n" .packages) -}}
 cask "codex"
+{{ end -}}
+{{ if has "codex-app" (splitList "\n" .packages) -}}
+cask "codex-app"
 {{ end -}}
 {{ if contains "claude-code" .packages -}}
 cask "claude-code"
