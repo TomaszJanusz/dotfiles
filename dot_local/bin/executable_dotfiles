@@ -252,6 +252,9 @@ OPERACJE ŁĄCZONE
                     Następny apply odpali je ponownie (np. ponowna instalacja extensions).
   help              Ten tekst.
 
+Pełny podręcznik z scenariuszami "co robić gdy X":
+  $(source_dir 2>/dev/null || echo "<chezmoi>")/dotfiles-cli.md
+
 Repo: $(source_dir 2>/dev/null || echo "<chezmoi nieskonfigurowany>")
 EOF
     ;;
