@@ -151,6 +151,21 @@ Apple blokuje iPhone Mirroring w UE z powodu DMA. Istnieje workaround ([timi2506
 
 **Świadomie nie integrujemy tego z chezmoi** — wymaga reboota do recovery, manual UI step, wyłącza Apple Pay i część DRM, nie jest idempotentne. Jeśli zdecydujesz się włączyć, zrób to jednorazowo poza pipeline i akceptuj koszt re-aplikowania przy update'ach.
 
+## Dodawanie nowego pakietu na działającej maszynie
+
+Gdy do `.chezmoi.toml.tmpl` doszła nowa opcja (np. nowy cask w grupie AI), normalny `dotfiles update` jej nie zauważy — gum został odpalony raz przy pierwszym `chezmoi init`, odpowiedzi siedzą w `~/.config/chezmoi/chezmoi.toml`.
+
+**Nowy flow (2 kroki):**
+
+```bash
+dotfiles reinit       # pull + chezmoi init — przelatujesz gum, Spacebar na nowych pozycjach
+dotfiles apply        # regeneruje ~/.Brewfile i automatycznie odpala brew bundle install
+```
+
+**Pod spodem:** `02-install-packages.sh` to teraz `run_onchange_*` z embeddowanym hashem `dot_Brewfile.tmpl` w komentarzu. Zmiana w Brewfile zmienia rendered hash skryptu → chezmoi sam re-runs instalkę. Plus `dotfiles update`/`apply` porównują shasum `~/.Brewfile` przed i po — fallback gdyby chezmoi z jakiegoś powodu nie odpalił.
+
+Dla **tej samej** opcji która **już była** w persisted packages (np. update wersji wszechobecnego pakietu w Brewfile) wystarczy zwykły `dotfiles update` — auto-bundle wystarczy.
+
 ## `dotfiles` CLI
 
 Skrót do typowych operacji na repo. Wrapper na chezmoi + git. Instalowany w `~/.local/bin/dotfiles` (PATH ustawiony w fish config).

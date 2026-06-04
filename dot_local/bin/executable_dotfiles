@@ -13,13 +13,34 @@ shift || true
 
 source_dir() { chezmoi source-path; }
 
+brewfile_hash() {
+    [ -f "$HOME/.Brewfile" ] && shasum -a 256 "$HOME/.Brewfile" | awk '{print $1}' || echo ""
+}
+
+maybe_brew_bundle() {
+    # Compares pre/post Brewfile sha; if changed, runs brew bundle install.
+    # This is a belt-and-suspenders fallback for the run_onchange_ script —
+    # if chezmoi didn't pick up the change for any reason, we still install.
+    local before="$1"
+    local after
+    after="$(brewfile_hash)"
+    if [ -n "$after" ] && [ "$before" != "$after" ]; then
+        echo "~/.Brewfile changed — running brew bundle install"
+        brew bundle install --file="$HOME/.Brewfile"
+    fi
+}
+
 case "$cmd" in
   update|up)
+    bf_before="$(brewfile_hash)"
     chezmoi update $VERBOSE
+    maybe_brew_bundle "$bf_before"
     ;;
 
   apply|a)
+    bf_before="$(brewfile_hash)"
     chezmoi apply $VERBOSE
+    maybe_brew_bundle "$bf_before"
     ;;
 
   diff|d)
@@ -53,9 +74,29 @@ case "$cmd" in
 
   sync)
     # Full bidirectional cycle: pull remote, apply, capture local
+    bf_before="$(brewfile_hash)"
     chezmoi update $VERBOSE
+    maybe_brew_bundle "$bf_before"
     chezmoi re-add
     git -C "$(source_dir)" status -sb
+    ;;
+
+  reinit)
+    # Re-run gum prompts to pick up new options added to .chezmoi.toml.tmpl
+    # (e.g. when a new package appeared in a gum choose since last init).
+    echo "Pulling latest source..."
+    git -C "$(source_dir)" pull --ff-only
+    cat <<MSG
+
+Now re-running chezmoi init — you'll see every gum screen again, with
+your current selections pre-checked. Hit Enter through ones you don't
+want to change; press Space on new options you want to add.
+
+After init finishes, run:
+  dotfiles apply
+
+MSG
+    chezmoi init
     ;;
 
   edit|e)
@@ -98,9 +139,14 @@ DOM → REPO (zapis lokalnych zmian do repo, bez wysyłki do GitHub)
 
 REPO → DOM (przyjęcie zmian z repo do realnych configów)
   update, up        Pobierz commity z GitHub i odśwież pliki w \$HOME.
-                    Najczęstsza komenda po włączeniu drugiej maszyny.
+                    Jeśli ~/.Brewfile się zmieni, automatycznie zainstaluje
+                    nowe pakiety. Najczęstsza komenda po włączeniu drugiej maszyny.
   apply, a          Odśwież pliki w \$HOME ze stanu repo (BEZ pobierania z GitHub).
+                    Też wykrywa zmianę Brewfile i odpala brew bundle install.
                     Użyteczne po lokalnej edycji szablonu w repo.
+  reinit            Pull + chezmoi init (przelatuje gum ekrany). Użyj gdy
+                    do .chezmoi.toml.tmpl doszły nowe opcje (np. nowy pakiet
+                    w gum choose) i chcesz je zaznaczyć.
 
 INSPEKCJA (nic nie zmienia)
   diff, d           Pokaż co zmieni "apply" w plikach w \$HOME przed wykonaniem.

@@ -1,7 +1,8 @@
-set -l cmds update up apply a diff d status st save commit c push sync edit e log l path reset-once help
+set -l cmds update up apply a diff d status st save commit c push sync edit e log l path reset-once reinit help
 
-complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "update"     -d "Pobierz z GitHub i odśwież configi w \$HOME"
-complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "apply"      -d "Odśwież configi w \$HOME ze stanu repo (bez pull)"
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "update"     -d "Pobierz z GitHub i odśwież configi (auto brew bundle gdy Brewfile się zmienił)"
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "apply"      -d "Odśwież configi w \$HOME ze stanu repo (auto brew bundle gdy Brewfile się zmienił)"
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "reinit"     -d "Pull + chezmoi init — żeby zaznaczyć nowe opcje gum"
 complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "diff"       -d "Pokaż co zmieni apply zanim go uruchomisz"
 complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "status"     -d "Lista plików w \$HOME różniących się od repo"
 complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "save"       -d "Wciągnij lokalne zmiany configów do repo (bez commita)"
