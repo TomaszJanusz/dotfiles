@@ -73,6 +73,14 @@ defaults write com.apple.screencapture type -string "png"
 # ── Developer folder (Finder auto-applies hammer icon for this magic name) ──
 mkdir -p "$HOME/Developer"
 
+{{ if .projekty_symlink -}}
+# ── Hidden ~/Projekty → ~/Developer (legacy path keeps working, stays out of Finder) ──
+if [ ! -e "$HOME/Projekty" ] && [ ! -L "$HOME/Projekty" ]; then
+    ln -s "$HOME/Developer" "$HOME/Projekty"
+fi
+chflags hidden "$HOME/Projekty" 2>/dev/null || true
+{{ end -}}
+
 # ── Misc ──
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true

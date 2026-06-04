@@ -4,6 +4,7 @@
 {{- $useAntigravity := promptBoolOnce . "use_antigravity" "Add Antigravity to PATH" false -}}
 {{- $debloatMacos := promptBoolOnce . "debloat_macos" "Debloat macOS (clean Dock, mute bundled apps)" true -}}
 {{- $cleanupOldFiles := promptBoolOnce . "cleanup_old_files" "Auto-trash files >30 days in Downloads/Screenshots (daily at 03:00)" true -}}
+{{- $projektySymlink := promptBoolOnce . "projekty_symlink" "Create hidden ~/Projekty symlink pointing to ~/Developer" true -}}
 
 {{- /* Compute brew prefix based on architecture */ -}}
 {{- $brewprefix := "/opt/homebrew" -}}
@@ -77,4 +78,5 @@
     use_antigravity = {{ $useAntigravity }}
     debloat_macos = {{ $debloatMacos }}
     cleanup_old_files = {{ $cleanupOldFiles }}
+    projekty_symlink = {{ $projektySymlink }}
     packages = {{ $allPkgs | quote }}
