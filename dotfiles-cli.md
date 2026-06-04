@@ -1,6 +1,6 @@
-# dotfiles CLI — życiowy podręcznik
+# dotfiles CLI — podręcznik praktyczny
 
-Praktyczne scenariusze: co robić gdy X. Zorganizowane od najczęstszych do edge case'ów. Code blocks po angielsku (terminal nie zna polskiego), opisy po polsku.
+Praktyczne scenariusze: co zrobić w sytuacji X. Uporządkowane od najczęstszych do edge case'ów. Bloki kodu w języku angielskim (terminal), opisy w polskim.
 
 ---
 
@@ -38,7 +38,7 @@ Repo ma dwa **niezależne źródła stanu**:
    $HOME (real configi)
 ```
 
-`dotfiles` CLI to wrapper który łączy oba kierunki w spójne workflow:
+`dotfiles` CLI to wrapper łączący oba kierunki w spójne procedury:
 
 - **REPO → DOM:** `update` (pull + apply), `apply` (tylko apply)
 - **DOM → REPO:** `save` (re-add), `commit`, `push`
@@ -48,7 +48,7 @@ Repo ma dwa **niezależne źródła stanu**:
 
 ## dotfiles vs chezmoi — kto co robi
 
-**Reguła:** zawsze najpierw szukaj `dotfiles X`. Jeśli nie ma — fallback do `chezmoi Y`.
+**Zasada:** najpierw sprawdź czy istnieje `dotfiles X`. Jeśli nie — użyj `chezmoi Y`.
 
 | Co chcesz | Komenda |
 |---|---|
@@ -88,7 +88,7 @@ Repo ma dwa **niezależne źródła stanu**:
 
 ## 1. Setup i utrzymanie
 
-### 1.1 Świeża maszoba — pierwsza godzina
+### 1.1 Świeża maszyna — pierwsza godzina
 
 **Problem:** dostałeś nowego Maca, chcesz mieć cały setup za jednym ruchem.
 
@@ -154,7 +154,7 @@ brew bundle install --file=~/.Brewfile
 Idempotentne — instaluje tylko brakujące. Jeśli chcesz wymuszony full reinstall:
 ```bash
 dotfiles reset-once     # czyści state run_once / run_onchange
-dotfiles apply          # _02-install-packages odpali się od nowa
+dotfiles apply          # _02-install-packages uruchomi się od nowa
 ```
 
 **Powiązane:** 2.4, 7.3
@@ -196,14 +196,14 @@ cask "neovim"
 
 Commit + push. Na docelowej maszynie:
 ```bash
-dotfiles update          # ciągnie commit, ale gum NIE odpala
+dotfiles update          # pobiera commit, ale gum nie zostanie uruchomiony
 dotfiles reinit          # pull + chezmoi init — przelatuj defaulty, Space na neovim
 dotfiles apply           # auto brew bundle zauważy nowy wpis
 ```
 
-**Dlaczego:** persisted `[data].packages` w `chezmoi.toml` zapamiętuje twoje gum wybory. Nowa opcja w template'cie nie pojawi się magicznie w persisted answers — gum musi się odpalić ponownie.
+**Dlaczego:** zapisane `[data].packages` w `chezmoi.toml` przechowuje twoje wcześniejsze wybory z gum. Nowa pozycja w szablonie nie pojawi się automatycznie w zapisanym stanie — gum musi zostać uruchomiony ponownie.
 
-**Pułapka:** `chezmoi init` wymaże twoje **odznaczone** rzeczy też. Jeśli wcześniej odznaczyłeś `tunnelbear`, w reinit musisz go znowu odznaczyć.
+**Pułapka:** `chezmoi init` zresetuje również twoje **odznaczone** pozycje. Jeśli wcześniej odznaczyłeś `tunnelbear`, w reinit musisz to powtórzyć.
 
 **Powiązane:** 2.2, 4.3
 
@@ -222,7 +222,7 @@ brew install --cask app-name
 
 Skoro Brewfile jest source of truth, ten pakiet **NIE wróci** sam na inne maszyny. Pearcleaner też go nie pokaże jako "managed". Jeśli kiedyś chcesz dodać do repo: edytuj template, commit, push (patrz 2.1).
 
-**Pułapka:** `brew bundle cleanup --force --file=~/.Brewfile` usunie te pakiety jeśli kiedyś odpalisz. Twoje ad-hoc instalacje są "ekstra".
+**Pułapka:** `brew bundle cleanup --force --file=~/.Brewfile` usunie te pakiety przy następnym uruchomieniu. Twoje ad-hoc instalacje są poza tym, co repo deklaruje.
 
 ---
 
@@ -266,13 +266,13 @@ Aby się NIE wrócił po następnym apply — patrz 2.3 (usuń z repo). Lub dorz
 
 ---
 
-### 2.5 Cleanup śmieci po cask uninstall
+### 2.5 Usunięcie pozostałych plików po odinstalowaniu cask
 
 **Problem:** odinstalowałeś app ale w `~/Library/Preferences/`, `~/Library/Application Support/` zostały megabajty configów.
 
 **Rozwiązanie:**
 ```bash
-# Nuklearna: brew zap (usuwa wg deklaracji cask'a)
+# Pełne usunięcie: brew zap (usuwa również pliki zadeklarowane w cask)
 brew uninstall --zap --cask app-name
 
 # Lub graficzna inspekcja:
@@ -675,7 +675,7 @@ brew install age
 age-keygen -o ~/.config/chezmoi/key.txt
 # Output: "Public key: age1abc..." — zapamiętaj public
 
-# 2. Zabezpiecz private key — wrzuć całą zawartość ~/.config/chezmoi/key.txt
+# 2. Zabezpiecz klucz prywatny — umieść całą zawartość ~/.config/chezmoi/key.txt
 #    do 1Password jako Secure Note "Chezmoi Age Key"
 
 # 3. Konfiguracja chezmoi
@@ -769,13 +769,13 @@ dotfiles migrate         # promptuje tylko o nowe promptBoolOnce/StringOnce
 
 Jeśli to gum-related (nowa opcja w `gum choose`) — patrz 4.3 (wymaga reinit).
 
-Warning może utrzymywać się aż do pełnego `chezmoi init` (który ustawia hash zapisany). To **kosmetyczne**, nic nie psuje.
+Ostrzeżenie może utrzymywać się aż do pełnego `chezmoi init` (który zapisze nowy hash). Jest **kosmetyczne**, nie wpływa na działanie.
 
 ---
 
-### 7.2 Skrypt nie odpalił po update
+### 7.2 Skrypt nie wykonał się po update
 
-**Problem:** edytowałeś `run_once_after_05-debloat.sh.tmpl`, push'nąłeś, `dotfiles update` ale skrypt się nie odpalił.
+**Problem:** edytowałeś `run_once_after_05-debloat.sh.tmpl`, wypchnąłeś zmiany, wykonałeś `dotfiles update`, ale skrypt nie został uruchomiony.
 
 **Diagnoza:**
 ```bash
@@ -785,7 +785,7 @@ chezmoi state dump | jq '.scriptState'
 
 **Możliwe przyczyny:**
 
-1. **`run_once_*` ran already** — nie odpali się znów. Zmień nazwę na `run_onchange_after_*` LUB:
+1. **`run_once_*` ran already** — nie uruchomi się znów. Zmień nazwę na `run_onchange_after_*` LUB:
    ```bash
    dotfiles reset-once  # czyści cały scriptState
    ```
@@ -803,7 +803,7 @@ chezmoi state dump | jq '.scriptState'
 
 ### 7.3 brew bundle failed mid-way
 
-**Problem:** install się wykrzaczył na środku (network drop, sudo timeout, pakiet bez Gatekeeper signature).
+**Problem:** instalacja przerwała się w trakcie (utrata sieci, timeout sudo, pakiet bez podpisu Gatekeeper).
 
 **Rozwiązanie:**
 ```bash
@@ -814,7 +814,7 @@ brew bundle check --file=~/.Brewfile --verbose | head -20
 brew bundle install --file=~/.Brewfile
 
 # 3. Dla problematycznego pakietu — ręczna decyzja
-brew install --cask problematic-app --no-quarantine   # jeśli Gatekeeper marudzi
+brew install --cask problematic-app --no-quarantine   # jeśli Gatekeeper blokuje
 # lub usuń z Brewfile jeśli nie ma już sensu
 ```
 

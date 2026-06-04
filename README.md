@@ -2,7 +2,7 @@
 
 macOS development environment managed with [chezmoi](https://www.chezmoi.io/).
 
-> 📖 **[dotfiles-cli.md](./dotfiles-cli.md)** — życiowy podręcznik z 30+ scenariuszami (setup, daily ops, migracja, troubleshooting, architektura).
+> 📖 **[dotfiles-cli.md](./dotfiles-cli.md)** — podręcznik praktyczny z 30+ scenariuszami (setup, codzienna praca, migracja, troubleshooting, architektura).
 
 ## Quick start
 
