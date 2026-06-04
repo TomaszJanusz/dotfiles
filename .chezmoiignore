@@ -2,7 +2,6 @@ README.md
 bootstrap.sh
 LICENSE
 .github/
-scripts/**
 .DS_Store
 **/.DS_Store
 .agents/.skill-lock.json
