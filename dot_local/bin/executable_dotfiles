@@ -1,6 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
+# Global verbose flag: dotfiles -v <cmd>  /  dotfiles --verbose <cmd>
+VERBOSE=""
+if [[ "${1:-}" == "-v" || "${1:-}" == "--verbose" ]]; then
+    VERBOSE="-v"
+    shift
+fi
+
 cmd="${1:-help}"
 shift || true
 
@@ -8,11 +15,11 @@ source_dir() { chezmoi source-path; }
 
 case "$cmd" in
   update|up)
-    chezmoi update -v
+    chezmoi update $VERBOSE
     ;;
 
   apply|a)
-    chezmoi apply -v
+    chezmoi apply $VERBOSE
     ;;
 
   diff|d)
@@ -46,7 +53,7 @@ case "$cmd" in
 
   sync)
     # Full bidirectional cycle: pull remote, apply, capture local
-    chezmoi update -v
+    chezmoi update $VERBOSE
     chezmoi re-add
     git -C "$(source_dir)" status -sb
     ;;
@@ -77,7 +84,11 @@ Sytuacja: są DWA źródła stanu — repo (source) w \$(dotfiles path) i
 realne configi w \$HOME. Te komendy synchronizują je w jedną lub drugą stronę.
 
 Użycie:
-  dotfiles <komenda> [argumenty]
+  dotfiles [-v|--verbose] <komenda> [argumenty]
+
+Flaga -v / --verbose przed komendą włącza verbose output dla
+update/apply/sync (drukuje rendered content uruchamianych
+skryptów). Bez niej output jest zwięzły.
 
 DOM → REPO (zapis lokalnych zmian do repo, bez wysyłki do GitHub)
   save              Wciągnij obecny stan configów z \$HOME do repo. Pokaż git status.
