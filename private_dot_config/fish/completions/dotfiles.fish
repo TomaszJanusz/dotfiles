@@ -1,4 +1,4 @@
-set -l cmds update up apply a diff d status st save commit c push sync edit e log l path reset-once reinit help
+set -l cmds update up apply a diff d status st save commit c push sync edit e log l path reset-once reinit flag migrate help
 
 complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "update"     -d "Pobierz z GitHub i odśwież configi (auto brew bundle gdy Brewfile się zmienił)"
 complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "apply"      -d "Odśwież configi w \$HOME ze stanu repo (auto brew bundle gdy Brewfile się zmienił)"
@@ -13,4 +13,6 @@ complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "edit"    
 complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "log"        -d "Ostatnie 20 commitów w repo"
 complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "path"       -d "Wypisz ścieżkę do source dir repo"
 complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "reset-once" -d "Pozwól skryptom run_once_* odpalić się jeszcze raz"
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "flag"       -d "Atomic edit pojedynczej flagi w chezmoi.toml [data]"
+complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "migrate"    -d "Promptuje tylko o brakujące promptBoolOnce/StringOnce (bez gum re-run)"
 complete -c dotfiles -n "not __fish_seen_subcommand_from $cmds" -f -a "help"       -d "Pomoc"

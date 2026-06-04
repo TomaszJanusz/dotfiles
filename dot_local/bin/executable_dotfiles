@@ -117,6 +117,87 @@ MSG
     echo "scriptState cleared — run_once_* scripts will re-execute on next apply"
     ;;
 
+  flag)
+    # Set a single chezmoi.toml [data] flag without re-running gum.
+    if [ $# -lt 2 ]; then
+      echo "usage: dotfiles flag <key> <true|false|integer|string>" >&2
+      exit 2
+    fi
+    key="$1"
+    value="$2"
+    cfg="$HOME/.config/chezmoi/chezmoi.toml"
+
+    # Quote anything that's not a bool or integer.
+    if [[ "$value" != "true" && "$value" != "false" && ! "$value" =~ ^-?[0-9]+$ ]]; then
+      value="\"${value}\""
+    fi
+
+    cp "$cfg" "$cfg.bak"
+    if grep -qE "^[[:space:]]*$key[[:space:]]*=" "$cfg"; then
+      sed -i.tmp -E "s|^([[:space:]]*$key[[:space:]]*=).*$|\1 $value|" "$cfg"
+      rm -f "$cfg.tmp"
+      echo "Updated: $key = $value"
+    else
+      # Insert before `packages = ` (the last line of [data] in our template).
+      awk -v key="$key" -v value="$value" '
+        /^[[:space:]]+packages[[:space:]]*=/ && !done { print "    " key " = " value; done = 1 }
+        { print }
+      ' "$cfg" > "$cfg.tmp" && mv "$cfg.tmp" "$cfg"
+      echo "Added: $key = $value"
+    fi
+    echo "Backup: $cfg.bak"
+    ;;
+
+  migrate)
+    # Find promptBoolOnce / promptStringOnce keys in .chezmoi.toml.tmpl that
+    # are NOT yet in chezmoi.toml, and prompt the user for each — without
+    # re-running gum (which would wipe persisted package selections).
+    src="$(source_dir)"
+    tmpl="$src/.chezmoi.toml.tmpl"
+    cfg="$HOME/.config/chezmoi/chezmoi.toml"
+
+    if [ ! -f "$tmpl" ]; then
+      echo "Template not found: $tmpl" >&2
+      exit 1
+    fi
+
+    missing=0
+    while IFS=$'\t' read -r kind key desc default; do
+      if ! grep -qE "^[[:space:]]*$key[[:space:]]*=" "$cfg"; then
+        missing=$((missing + 1))
+        echo
+        echo "NEW: $key  ($kind, default: $default)"
+        echo "  $desc"
+        read -p "  Set value [$default]: " value
+        value="${value:-$default}"
+
+        if [ "$kind" = "string" ]; then
+          value="\"${value}\""
+        fi
+
+        awk -v key="$key" -v value="$value" '
+          /^[[:space:]]+packages[[:space:]]*=/ && !done { print "    " key " = " value; done = 1 }
+          { print }
+        ' "$cfg" > "$cfg.tmp" && mv "$cfg.tmp" "$cfg"
+        echo "  ✓ added"
+      fi
+    done < <(
+      # Extract promptBoolOnce calls: kind=bool
+      grep -oE 'promptBoolOnce[[:space:]]+\.[[:space:]]+"[^"]+"[[:space:]]+"[^"]+"[[:space:]]+(true|false)' "$tmpl" \
+        | sed -E 's/promptBoolOnce[[:space:]]+\.[[:space:]]+"([^"]+)"[[:space:]]+"([^"]+)"[[:space:]]+(true|false)/bool\t\1\t\2\t\3/'
+      # Extract promptStringOnce calls: kind=string
+      grep -oE 'promptStringOnce[[:space:]]+\.[[:space:]]+"[^"]+"[[:space:]]+"[^"]+"[[:space:]]+"[^"]+"' "$tmpl" \
+        | sed -E 's/promptStringOnce[[:space:]]+\.[[:space:]]+"([^"]+)"[[:space:]]+"([^"]+)"[[:space:]]+"([^"]+)"/string\t\1\t\2\t\3/'
+    )
+
+    if [ "$missing" -eq 0 ]; then
+      echo "No new flags to migrate — chezmoi.toml is in sync with the template."
+    else
+      echo
+      echo "Migrated $missing flag(s). Run 'dotfiles apply' to take effect."
+    fi
+    ;;
+
   help|--help|-h|"")
     cat <<EOF
 dotfiles — zarządzanie dotfiles przez chezmoi + git
@@ -147,6 +228,14 @@ REPO → DOM (przyjęcie zmian z repo do realnych configów)
   reinit            Pull + chezmoi init (przelatuje gum ekrany). Użyj gdy
                     do .chezmoi.toml.tmpl doszły nowe opcje (np. nowy pakiet
                     w gum choose) i chcesz je zaznaczyć.
+
+KONFIGURACJA (edycja [data] w chezmoi.toml bez gum re-run)
+  flag <key> <val>  Atomic edit jednej flagi w chezmoi.toml. Backup .bak.
+                    Przykład: dotfiles flag projekty_symlink true
+  migrate           Skanuje .chezmoi.toml.tmpl za promptBoolOnce/StringOnce
+                    których brakuje w chezmoi.toml. Promptuje tylko o nie,
+                    bez ruszania gum-selekcji pakietów. Antidotum na warning
+                    "config file template has changed".
 
 INSPEKCJA (nic nie zmienia)
   diff, d           Pokaż co zmieni "apply" w plikach w \$HOME przed wykonaniem.
