@@ -25,6 +25,8 @@ defaults write com.apple.dock autohide -bool false
 defaults write com.apple.dock minimize-to-application -bool true
 defaults write com.apple.dock show-recents -bool false
 defaults write com.apple.dock tilesize -int 48
+# Disable "Automatically rearrange Spaces based on most recent use".
+defaults write com.apple.dock mru-spaces -bool false
 
 # ── Keyboard ──
 defaults write NSGlobalDomain KeyRepeat -int 2
