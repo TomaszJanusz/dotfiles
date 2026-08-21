@@ -255,6 +255,9 @@ cask "codex-app"
 {{ if has "t3-code" (splitList "\n" .packages) -}}
 cask "t3-code"
 {{ end -}}
+{{ if has "cursor-cli" (splitList "\n" .packages) -}}
+cask "cursor-cli"
+{{ end -}}
 {{ if contains "claude-code" .packages -}}
 cask "claude-code"
 {{ end -}}
