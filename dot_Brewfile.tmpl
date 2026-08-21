@@ -198,6 +198,9 @@ brew "sinelaw/fresh/fresh"
 {{ if contains "kaset" .packages -}}
 cask "sozercan/repo/kaset"
 {{ end -}}
+{{ if contains "atoll" .packages -}}
+cask "atoll"
+{{ end -}}
 
 # --- macOS extras ---
 {{ if contains "qlmarkdown" .packages -}}
