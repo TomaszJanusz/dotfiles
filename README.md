@@ -198,7 +198,7 @@ Gdy do `.chezmoi.toml.tmpl` doszła nowa opcja (np. nowy cask w grupie AI), norm
 **Nowy flow (2 kroki):**
 
 ```bash
-dotfiles reinit       # pull + chezmoi init — przelatujesz gum, Spacebar na nowych pozycjach
+dotfiles reinit       # pull + chezmoi init — gum startuje od obecnego wyboru, Spacebar na zmianach
 dotfiles apply        # regeneruje ~/.Brewfile i automatycznie odpala brew bundle install
 ```
 

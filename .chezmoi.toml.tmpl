@@ -14,63 +14,90 @@
 {{-   $brewprefix = "/usr/local" -}}
 {{- end -}}
 
+{{- /* Package selection. Each gum list starts from the choice saved in
+       chezmoi.toml by the previous init; the "defaults" below only apply on a
+       fresh machine. Re-running init is therefore safe for small changes. */ -}}
+{{- $saved := list -}}
+{{- $hasSaved := hasKey . "packages" -}}
+{{- if $hasSaved -}}
+{{-   $saved = .packages | splitList "\n" | compact -}}
+{{- end -}}
+
+{{- $catalog := list
+  (dict "group" "dev-tools" "header" "Dev tools (deselect what you don't need):"
+        "defaults" (list "webstorm" "zed" "visual-studio-code" "karabiner-elements" "dash" "orbstack")
+        "items" (list "webstorm" "zed" "visual-studio-code" "visual-studio-code@insiders" "karabiner-elements" "dash" "go" "alfred" "orbstack"))
+  (dict "group" "productivity" "header" "Productivity apps:"
+        "defaults" (list "obsidian" "notion" "mailmate" "claude" "chatgpt" "popclip" "rectangle-pro")
+        "items" (list "obsidian" "notion" "mailmate" "claude" "chatgpt" "popclip" "rectangle-pro"))
+  (dict "group" "media" "header" "Media tools:"
+        "defaults" (list "vlc" "handbrake" "transmission")
+        "items" (list "vlc" "handbrake" "transmission" "downie" "camtasia" "snagit" "eqmac"))
+  (dict "group" "security" "header" "Security & Network:"
+        "defaults" (list "gpg-suite" "signal")
+        "items" (list "gpg-suite" "signal" "tunnelbear" "windscribe"))
+  (dict "group" "utils" "header" "Utilities:"
+        "defaults" (list "tmux" "ncdu" "thefuck" "pearcleaner" "cyberduck")
+        "items" (list "tmux" "cmux" "ncdu" "thefuck" "pearcleaner" "cyberduck" "balenaetcher" "yt-dlp" "glab" "tokei" "midnight-commander" "entr" "ansible" "cloc" "fresh" "kaset" "atoll"))
+  (dict "group" "macos-extras" "header" "macOS extras:"
+        "defaults" (list "qlmarkdown" "mas-amphetamine" "mas-infuse")
+        "items" (list "qlmarkdown" "mas-amphetamine" "mas-infuse" "mas-turn-off-lights"))
+  (dict "group" "browsers" "header" "Browsers:"
+        "defaults" (list "google-chrome" "firefox")
+        "items" (list "google-chrome" "google-chrome@dev" "firefox" "firefox@developer-edition" "brave-browser@beta" "helium-browser" "zen"))
+  (dict "group" "AI" "header" "AI tools:"
+        "defaults" (list "opencode" "gemini-cli" "codex" "claude-code" "notion-cli")
+        "items" (list "opencode" "gemini-cli" "codex" "codex-app" "claude-code" "notion-cli" "pi-coding-agent" "t3-code" "cursor-cli"))
+  (dict "group" "design" "header" "Design tools:"
+        "defaults" (list)
+        "items" (list "affinity" "inkscape"))
+-}}
+{{- $karabiner := dict "header" "Karabiner rules (per active mapping):"
+      "defaults" (list) "items" (list "karabiner-krux" "karabiner-k380" "karabiner-coma") -}}
+
 {{- /* === STEP 1: Select package groups === */ -}}
-{{- $groups := output "gum" "choose" "--no-limit" "--header" "Select package groups to install:" "--selected" "dev-tools,productivity,media,security,utils,macos-extras,browsers,AI" "dev-tools" "productivity" "media" "security" "utils" "macos-extras" "browsers" "AI" "design" -}}
+{{- $groupNames := list -}}
+{{- $groupDefaults := list -}}
+{{- range $catalog -}}
+{{-   $groupNames = append $groupNames .group -}}
+{{-   $preselect := gt (len .defaults) 0 -}}
+{{-   if $hasSaved -}}
+{{-     $preselect = false -}}
+{{-     range .items -}}
+{{-       if has . $saved -}}{{- $preselect = true -}}{{- end -}}
+{{-     end -}}
+{{-   end -}}
+{{-   if $preselect -}}{{- $groupDefaults = append $groupDefaults .group -}}{{- end -}}
+{{- end -}}
+{{- $groups := outputList "gum" (concat (list "choose" "--no-limit" "--header" "Select package groups to install:" "--selected" (join "," $groupDefaults)) $groupNames) | splitList "\n" -}}
 
 {{- /* === STEP 2: Per-group package selection === */ -}}
-
-{{- $devPkgs := "" -}}
-{{- if contains "dev-tools" $groups -}}
-{{-   $devPkgs = output "gum" "choose" "--no-limit" "--header" "Dev tools (deselect what you don't need):" "--selected" "webstorm,zed,visual-studio-code,karabiner-elements,dash,orbstack" "webstorm" "zed" "visual-studio-code" "visual-studio-code@insiders" "karabiner-elements" "dash" "go" "alfred" "orbstack" -}}
+{{- $chosen := list -}}
+{{- range $catalog -}}
+{{-   if has .group $groups -}}
+{{-     $selected := .defaults -}}
+{{-     if $hasSaved -}}
+{{-       $selected = list -}}
+{{-       range .items -}}
+{{-         if has . $saved -}}{{- $selected = append $selected . -}}{{- end -}}
+{{-       end -}}
+{{-     end -}}
+{{-     $chosen = append $chosen (outputList "gum" (concat (list "choose" "--no-limit" "--header" .header "--selected" (join "," $selected)) .items)) -}}
+{{-   end -}}
 {{- end -}}
 
-{{- $prodPkgs := "" -}}
-{{- if contains "productivity" $groups -}}
-{{-   $prodPkgs = output "gum" "choose" "--no-limit" "--header" "Productivity apps:" "--selected" "obsidian,notion,mailmate,claude,chatgpt,popclip,rectangle-pro" "obsidian" "notion" "mailmate" "claude" "chatgpt" "popclip" "rectangle-pro" -}}
+{{- if contains "karabiner-elements" (join "\n" $chosen) -}}
+{{-   $selected := $karabiner.defaults -}}
+{{-   if $hasSaved -}}
+{{-     $selected = list -}}
+{{-     range $karabiner.items -}}
+{{-       if has . $saved -}}{{- $selected = append $selected . -}}{{- end -}}
+{{-     end -}}
+{{-   end -}}
+{{-   $chosen = append $chosen (outputList "gum" (concat (list "choose" "--no-limit" "--header" $karabiner.header "--selected" (join "," $selected)) $karabiner.items)) -}}
 {{- end -}}
 
-{{- $mediaPkgs := "" -}}
-{{- if contains "media" $groups -}}
-{{-   $mediaPkgs = output "gum" "choose" "--no-limit" "--header" "Media tools:" "--selected" "vlc,handbrake,transmission" "vlc" "handbrake" "transmission" "downie" "camtasia" "snagit" "eqmac" -}}
-{{- end -}}
-
-{{- $secPkgs := "" -}}
-{{- if contains "security" $groups -}}
-{{-   $secPkgs = output "gum" "choose" "--no-limit" "--header" "Security & Network:" "--selected" "gpg-suite,signal" "gpg-suite" "signal" "tunnelbear" "windscribe" -}}
-{{- end -}}
-
-{{- $utilsPkgs := "" -}}
-{{- if contains "utils" $groups -}}
-{{-   $utilsPkgs = output "gum" "choose" "--no-limit" "--header" "Utilities:" "--selected" "tmux,ncdu,thefuck,pearcleaner,cyberduck" "tmux" "cmux" "ncdu" "thefuck" "pearcleaner" "cyberduck" "balenaetcher" "yt-dlp" "glab" "tokei" "midnight-commander" "entr" "ansible" "cloc" "fresh" "kaset" "atoll" -}}
-{{- end -}}
-
-{{- $macosExtras := "" -}}
-{{- if contains "macos-extras" $groups -}}
-{{-   $macosExtras = output "gum" "choose" "--no-limit" "--header" "macOS extras:" "--selected" "qlmarkdown,mas-amphetamine,mas-infuse" "qlmarkdown" "mas-amphetamine" "mas-infuse" "mas-turn-off-lights" -}}
-{{- end -}}
-
-{{- $browserPkgs := "" -}}
-{{- if contains "browsers" $groups -}}
-{{-   $browserPkgs = output "gum" "choose" "--no-limit" "--header" "Browsers:" "--selected" "google-chrome,firefox" "google-chrome" "google-chrome@dev" "firefox" "firefox@developer-edition" "brave-browser@beta" "helium-browser" "zen" -}}
-{{- end -}}
-
-{{- $aiPkgs := "" -}}
-{{- if contains "AI" $groups -}}
-{{-   $aiPkgs = output "gum" "choose" "--no-limit" "--header" "AI tools:" "--selected" "opencode,gemini-cli,codex,claude-code,notion-cli" "opencode" "gemini-cli" "codex" "codex-app" "claude-code" "notion-cli" "pi-coding-agent" "t3-code" "cursor-cli" -}}
-{{- end -}}
-
-{{- $designPkgs := "" -}}
-{{- if contains "design" $groups -}}
-{{-   $designPkgs = output "gum" "choose" "--no-limit" "--header" "Design tools:" "--selected" "" "affinity" "inkscape" -}}
-{{- end -}}
-
-{{- $karabinerRules := "" -}}
-{{- if contains "karabiner-elements" $devPkgs -}}
-{{-   $karabinerRules = output "gum" "choose" "--no-limit" "--header" "Karabiner rules (per active mapping):" "--selected" "" "karabiner-krux" "karabiner-k380" "karabiner-coma" -}}
-{{- end -}}
-
-{{- /* Merge all selections */ -}}
-{{- $allPkgs := printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" $devPkgs $prodPkgs $mediaPkgs $secPkgs $utilsPkgs $macosExtras $browserPkgs $aiPkgs $designPkgs $karabinerRules -}}
+{{- $allPkgs := join "\n" $chosen -}}
 
 [data]
     name = {{ $name | quote }}

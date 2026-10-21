@@ -186,7 +186,7 @@ Bez `exec` powstanie zagnieżdżony shell. Z `exec` zastępuje bieżący proces.
 
 **Rozwiązanie:**
 
-W repo, edytuj `.chezmoi.toml.tmpl` (sekcja `$devPkgs`) — dodaj `"neovim"` do listy gum choose. Potem `dot_Brewfile.tmpl`:
+W repo, edytuj `.chezmoi.toml.tmpl` (wpis `dev-tools` w `$catalog`) — dodaj `"neovim"` do `items` (i do `defaults`, jeśli ma być zaznaczony na nowej maszynie). Potem `dot_Brewfile.tmpl`:
 
 ```
 {{ if has "neovim" (splitList "\n" .packages) -}}
@@ -197,13 +197,13 @@ cask "neovim"
 Commit + push. Na docelowej maszynie:
 ```bash
 dotfiles update          # pobiera commit, ale gum nie zostanie uruchomiony
-dotfiles reinit          # pull + chezmoi init — przelatuj defaulty, Space na neovim
+dotfiles reinit          # pull + chezmoi init — twój wybór jest już zaznaczony, Space na neovim
 dotfiles apply           # auto brew bundle zauważy nowy wpis
 ```
 
 **Dlaczego:** zapisane `[data].packages` w `chezmoi.toml` przechowuje twoje wcześniejsze wybory z gum. Nowa pozycja w szablonie nie pojawi się automatycznie w zapisanym stanie — gum musi zostać uruchomiony ponownie.
 
-**Pułapka:** `chezmoi init` zresetuje również twoje **odznaczone** pozycje. Jeśli wcześniej odznaczyłeś `tunnelbear`, w reinit musisz to powtórzyć.
+Gum startuje od zapisanego wyboru (`defaults` z szablonu liczą się tylko na świeżej maszynie), więc Enter bez zmian niczego nie resetuje. Odznaczenie pozycji usuwa ją z Brewfile, ale nie odinstalowuje aplikacji — to `brew uninstall` ręcznie.
 
 **Powiązane:** 2.2, 4.3
 
