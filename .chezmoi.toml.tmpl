@@ -36,7 +36,7 @@
 
 {{- $secPkgs := "" -}}
 {{- if contains "security" $groups -}}
-{{-   $secPkgs = output "gum" "choose" "--no-limit" "--header" "Security & Network:" "--selected" "gpg-suite,lulu,signal" "gpg-suite" "lulu" "signal" "tunnelbear" "windscribe" -}}
+{{-   $secPkgs = output "gum" "choose" "--no-limit" "--header" "Security & Network:" "--selected" "gpg-suite,signal" "gpg-suite" "signal" "tunnelbear" "windscribe" -}}
 {{- end -}}
 
 {{- $utilsPkgs := "" -}}

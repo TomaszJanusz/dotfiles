@@ -116,7 +116,7 @@ cask "rectangle-pro"
 cask "vlc"
 {{ end -}}
 {{ if contains "handbrake" .packages -}}
-cask "handbrake"
+cask "handbrake-app"
 {{ end -}}
 {{ if contains "transmission" .packages -}}
 cask "transmission"
@@ -137,9 +137,6 @@ cask "eqmac"
 # --- Security & Network ---
 {{ if contains "gpg-suite" .packages -}}
 cask "gpg-suite"
-{{ end -}}
-{{ if contains "lulu" .packages -}}
-cask "lulu"
 {{ end -}}
 {{ if contains "signal" .packages -}}
 cask "signal"
