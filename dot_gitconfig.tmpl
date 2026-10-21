@@ -1,5 +1,5 @@
-{{- $agentTools := true -}}
-{{- if hasKey . "agent_tools" -}}{{- $agentTools = .agent_tools -}}{{- end -}}
+{{- $agentConfig := true -}}
+{{- if hasKey . "agent_config" -}}{{- $agentConfig = .agent_config -}}{{- end -}}
 [user]
 	name = {{ .name }}
 	email = {{ .email }}
@@ -21,24 +21,9 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
-{{ if $agentTools }}
-# Agent-friendly defaults (mirrors workbench_git_config in geowarp-runner).
-# rerere replays recorded conflict resolutions; diff3 shows the merge base
-# (mergiraf cannot parse zdiff3); histogram gives more readable diffs.
-[rerere]
-	enabled = true
-	autoUpdate = true
-[merge]
-	conflictStyle = diff3
-[diff]
-	algorithm = histogram
-[fetch]
-	prune = true
-[push]
-	autoSetupRemote = true
-# Syntax-aware merges for the file types in ~/.config/git/attributes.
-# Disable for one command: mergiraf=0 git rebase ...
-[merge "mergiraf"]
-	name = mergiraf
-	driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L
+{{ if $agentConfig }}
+# Agent Git defaults and the mergiraf driver, shared with runner02:
+# TomaszJanusz/agent-config/git/agent.gitconfig. Git skips a missing include.
+[include]
+	path = {{ .chezmoi.homeDir }}/Developer/agent-config/git/agent.gitconfig
 {{ end -}}

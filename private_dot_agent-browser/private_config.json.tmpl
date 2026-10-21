@@ -1,9 +1,0 @@
-{{- $agentTools := true -}}
-{{- if hasKey . "agent_tools" -}}{{- $agentTools = .agent_tools -}}{{- end -}}
-{{ if $agentTools -}}
-{
-  "$schema": "https://agent-browser.dev/schema.json",
-  "contentBoundaries": true,
-  "maxOutput": 50000
-}
-{{ end -}}

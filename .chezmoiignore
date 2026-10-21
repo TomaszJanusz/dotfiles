@@ -8,8 +8,9 @@ LICENSE
 .DS_Store
 **/.DS_Store
 .agents/.skill-lock.json
-# ~/.agents/skills is populated by agent-config-sync (TomaszJanusz/agent-config).
+# Populated by agent-config-sync (TomaszJanusz/agent-config).
 .agents/skills/**
+.agent-browser/config.json
 {{ if not $agentConfig -}}
 Library/LaunchAgents/com.tjanusz.agent-config-sync.plist
 {{ end -}}

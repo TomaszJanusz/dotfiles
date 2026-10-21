@@ -150,14 +150,12 @@ Lustro roli `agent_tools` z `geowarp-runner` (runner02), w wersji dla macOS:
 - **Brewfile:** `agent-browser`, `ast-grep`, `mergiraf`, `gitleaks`, `actionlint`,
   `zizmor`, `osv-scanner`, `typos-cli`, `yq`, `hyperfine`, `gdu` (binarka
   `gdu-go`, bo `gdu` to GNU du z coreutils), `ccusage`
-- **`~/.gitconfig`:** `rerere`, `merge.conflictStyle=diff3` (mergiraf nie czyta
-  `zdiff3`), `diff.algorithm=histogram`, `fetch.prune`, `push.autoSetupRemote`
-  i sterownik `mergiraf`; typy plików w `~/.config/git/attributes`
-  (wygenerowane przez `mergiraf languages --gitattributes`; po aktualizacji
-  mergiraf wygeneruj ponownie). Wyłączenie na jedno polecenie:
-  `mergiraf=0 git rebase …`
-- **`~/.agent-browser/config.json`:** content boundaries i limit outputu; w fish
-  `AGENT_BROWSER_IDLE_TIMEOUT_MS` i `AGENT_BROWSER_STATE_EXPIRE_DAYS`
+- **Konfiguracja wspólna z runner02** żyje w `agent-config`, nie tutaj:
+  `~/.gitconfig` dołącza `agent-config/git/agent.gitconfig` (rerere, diff3,
+  histogram, sterownik mergiraf i lista typów plików), a
+  `~/.agent-browser/config.json` to link do `agent-config/agent-browser/`.
+  W fish zostają tylko zmienne `AGENT_BROWSER_IDLE_TIMEOUT_MS` i
+  `AGENT_BROWSER_STATE_EXPIRE_DAYS`
 - **`run_onchange_after_10`:** przypięte rozszerzenie `gh-stack`
 
 Na Linuksie to samo instaluje Ansible; wersje różnią się tym, że Homebrew
