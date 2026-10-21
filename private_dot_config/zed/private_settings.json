@@ -7,6 +7,8 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "proxy": "",
+  "cli_default_open_behavior": "new_window",
   "ui_font_weight": 400.0,
   "agent_buffer_font_size": 15.0,
   "icon_theme": {
@@ -16,7 +18,11 @@
   },
   "format_on_save": "off",
   "agent_servers": {
-    "github-copilot-cli": {
+    "cursor": {
+      "default_config_options": {
+        "mode": "agent",
+        "effort": "medium"
+      },
       "type": "registry"
     },
     "codex-acp": {
@@ -27,7 +33,7 @@
     "dock": "left"
   },
   "outline_panel": {
-    "dock": "left"
+    "dock": "right"
   },
   "collaboration_panel": {
     "dock": "left"
@@ -54,7 +60,11 @@
   },
   "ui_font_size": 16.0,
   "buffer_font_size": 15.0,
-  "theme": "Gruvbox Dark",
+  "theme": {
+    "mode": "system",
+    "light": "Ayu Light",
+    "dark": "Ayu Dark"
+  },
   "auto_install_extensions": {
     "catppuccin-blur": true,
     "colored-zed-icons-theme": true,

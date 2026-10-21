@@ -1,6 +1,7 @@
 {{- $agentConfig := true -}}
 {{- if hasKey . "agent_config" -}}{{- $agentConfig = .agent_config -}}{{- end -}}
 README.md
+dotfiles-cli.md
 bootstrap.sh
 LICENSE
 .github/

@@ -6,6 +6,7 @@
 {{- $cleanupOldFiles := promptBoolOnce . "cleanup_old_files" "Auto-trash files >30 days in Downloads/Screenshots (daily at 03:00)" true -}}
 {{- $projektySymlink := promptBoolOnce . "projekty_symlink" "Create hidden ~/Projekty symlink pointing to ~/Developer" true -}}
 {{- $agentConfig := promptBoolOnce . "agent_config" "Sync agent skills and global instructions from TomaszJanusz/agent-config (hourly)" true -}}
+{{- $agentTools := promptBoolOnce . "agent_tools" "Install coding-agent tools (agent-browser, ast-grep, mergiraf, linters) and agent git defaults" true -}}
 
 {{- /* Compute brew prefix based on architecture */ -}}
 {{- $brewprefix := "/opt/homebrew" -}}
@@ -81,4 +82,5 @@
     cleanup_old_files = {{ $cleanupOldFiles }}
     projekty_symlink = {{ $projektySymlink }}
     agent_config = {{ $agentConfig }}
+    agent_tools = {{ $agentTools }}
     packages = {{ $allPkgs | quote }}

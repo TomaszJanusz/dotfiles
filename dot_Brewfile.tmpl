@@ -1,3 +1,5 @@
+{{- $agentTools := true -}}
+{{- if hasKey . "agent_tools" -}}{{- $agentTools = .agent_tools -}}{{- end -}}
 # ══════════════════════════════════════
 # Core (always installed)
 # ══════════════════════════════════════
@@ -262,13 +264,29 @@ cask "t3-code"
 cask "cursor-cli"
 {{ end -}}
 {{ if contains "claude-code" .packages -}}
-cask "claude-code"
+cask "claude-code@latest"
 {{ end -}}
 {{ if contains "notion-cli" .packages -}}
 brew "4ier/tap/notion-cli"
 {{ end -}}
 {{ if contains "pi-coding-agent" .packages -}}
 brew "pi-coding-agent"
+{{ end -}}
+
+# --- Agent tools (mirrors roles/agent_tools in geowarp-runner) ---
+{{ if $agentTools -}}
+brew "agent-browser"   # browser automation CLI for agents (Vercel Labs)
+brew "ast-grep"        # structural search/rewrite (ast-grep, sg)
+brew "mergiraf"        # syntax-aware git merge driver
+brew "gitleaks"        # secret scanning
+brew "actionlint"      # GitHub Actions linter
+brew "zizmor"          # GitHub Actions security linter
+brew "osv-scanner"     # lockfile vulnerability scan
+brew "typos-cli"       # spell checker for code (typos)
+brew "yq"              # jq for YAML
+brew "hyperfine"       # benchmarking
+brew "gdu"             # disk usage explorer (binary: gdu-go; gdu is GNU du from coreutils)
+brew "ccusage"         # Claude Code / Codex token usage
 {{ end -}}
 
 # --- Design ---

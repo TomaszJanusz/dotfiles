@@ -1,3 +1,5 @@
+{{- $agentTools := true -}}
+{{- if hasKey . "agent_tools" -}}{{- $agentTools = .agent_tools -}}{{- end -}}
 set -g -x PATH $PATH {{ .brewprefix }}/bin
 set -g -x PATH $PATH $HOME/.local/bin/
 set -xg OMF_CONFIG $HOME/.config/omf
@@ -14,6 +16,13 @@ zoxide init fish | source
 
 # Tokescale
 alias tokescale="bunx tokscale@latest submit"
+{{ if $agentTools }}
+# agent-browser: close forgotten browser daemons after 15 min, expire saved state after 7 days
+set -gx AGENT_BROWSER_IDLE_TIMEOUT_MS 900000
+set -gx AGENT_BROWSER_STATE_EXPIRE_DAYS 7
+{{ end }}
+# OrbStack: command-line tools and integration
+source ~/.orbstack/shell/init2.fish 2>/dev/null || :
 {{ if .use_antigravity }}
 # Antigravity
 fish_add_path {{ .chezmoi.homeDir }}/.antigravity/antigravity/bin

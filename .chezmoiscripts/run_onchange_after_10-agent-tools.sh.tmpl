@@ -1,0 +1,19 @@
+{{- $agentTools := true -}}
+{{- if hasKey . "agent_tools" -}}{{- $agentTools = .agent_tools -}}{{- end -}}
+{{ if and (eq .chezmoi.os "darwin") $agentTools -}}
+#!/bin/bash
+# GitHub CLI extensions for agents (mirrors agent_tools_gh_extensions in
+# geowarp-runner). Brew installs the binaries; this pins the extensions.
+set -euo pipefail
+GH={{ .brewprefix }}/bin/gh
+
+if ! "$GH" auth status --hostname github.com >/dev/null 2>&1; then
+  echo "agent tools: gh is not logged in; skipping gh extensions."
+  exit 0
+fi
+if ! "$GH" extension list | grep -qE 'github/gh-stack\s+v0\.2\.1'; then
+  "$GH" extension remove stack >/dev/null 2>&1 || true
+  "$GH" extension install github/gh-stack --pin v0.2.1
+fi
+echo "agent tools: gh extensions ready."
+{{ end -}}

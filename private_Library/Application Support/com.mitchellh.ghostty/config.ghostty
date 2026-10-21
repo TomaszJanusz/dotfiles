@@ -25,7 +25,7 @@ palette = 12=#6bdfff
 palette = 13=#ff85b8
 palette = 14=#e5cfff
 palette = 15=#ffffff
-keybind = global:cmd+`=toggle_quick_terminal
+keybind = global:alt+`=toggle_quick_terminal
 macos-titlebar-style = tabs
 macos-option-as-alt = true
 macos-icon = chalkboard

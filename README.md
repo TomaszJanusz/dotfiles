@@ -143,6 +143,34 @@ repo czyta runner02 (Ansible, rola `agent_config` w `geowarp-runner`). Po
 `npx skills add … -a codex --copy` w tym repo), push — Mac podłapie w ciągu
 godziny, od razu: `~/Developer/agent-config/bin/agent-config-sync`.
 
+## Narzędzia agentów (opt-in `agent_tools`, domyślnie włączone)
+
+Lustro roli `agent_tools` z `geowarp-runner` (runner02), w wersji dla macOS:
+
+- **Brewfile:** `agent-browser`, `ast-grep`, `mergiraf`, `gitleaks`, `actionlint`,
+  `zizmor`, `osv-scanner`, `typos-cli`, `yq`, `hyperfine`, `gdu` (binarka
+  `gdu-go`, bo `gdu` to GNU du z coreutils), `ccusage`
+- **`~/.gitconfig`:** `rerere`, `merge.conflictStyle=diff3` (mergiraf nie czyta
+  `zdiff3`), `diff.algorithm=histogram`, `fetch.prune`, `push.autoSetupRemote`
+  i sterownik `mergiraf`; typy plików w `~/.config/git/attributes`
+  (wygenerowane przez `mergiraf languages --gitattributes`; po aktualizacji
+  mergiraf wygeneruj ponownie). Wyłączenie na jedno polecenie:
+  `mergiraf=0 git rebase …`
+- **`~/.agent-browser/config.json`:** content boundaries i limit outputu; w fish
+  `AGENT_BROWSER_IDLE_TIMEOUT_MS` i `AGENT_BROWSER_STATE_EXPIRE_DAYS`
+- **`run_onchange_after_10`:** przypięte rozszerzenie `gh-stack`
+
+Na Linuksie to samo instaluje Ansible; wersje różnią się tym, że Homebrew
+idzie za najnowszymi, a runner02 przypina wersje i SHA-256.
+
+## Backup katalogu
+
+`backup-dir.sh <katalog> [--exclude <glob>]…` pakuje katalog do
+`~/<nazwa>-<data>.zip`. Pomija wszystko, co da się odtworzyć: zależności
+(`node_modules`, `.venv`, `vendor`, …), buildy i cache (`dist`, `.next`,
+`target`, …), raporty testów i worktree agentów. Zostawia `.git`, więc
+niewypchnięte gałęzie i stashe przetrwają. Przykład: `backup-dir.sh ~/Developer --exclude '*.tar'`.
+
 ## macOS debloat (opt-in)
 
 Włączane promptem `debloat_macos` przy `chezmoi init`. Skrypt `run_once_after_05`:
