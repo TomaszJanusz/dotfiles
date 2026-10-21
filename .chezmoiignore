@@ -1,3 +1,5 @@
+{{- $agentConfig := true -}}
+{{- if hasKey . "agent_config" -}}{{- $agentConfig = .agent_config -}}{{- end -}}
 README.md
 bootstrap.sh
 LICENSE
@@ -5,8 +7,10 @@ LICENSE
 .DS_Store
 **/.DS_Store
 .agents/.skill-lock.json
-{{ if not (contains "notion-cli" .packages) -}}
-.agents/skills/notion-cli/**
+# ~/.agents/skills is populated by agent-config-sync (TomaszJanusz/agent-config).
+.agents/skills/**
+{{ if not $agentConfig -}}
+Library/LaunchAgents/com.tjanusz.agent-config-sync.plist
 {{ end -}}
 {{ if not (contains "karabiner-elements" .packages) -}}
 .config/karabiner/**

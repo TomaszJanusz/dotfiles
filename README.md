@@ -110,26 +110,38 @@ private_dot_config/         # ~/.config/ managed files
   fish/                     # Fish shell config
   omf/                      # Oh My Fish packages
   tmux/                     # tmux config
-dot_agents/                 # ~/.agents/ — Vercel skills source of truth
-  skills/                   # Skill folders (caveman-*, copywriting, etc.)
 .chezmoiscripts/            # Automated setup scripts
   run_once_before_01-*      # Install Homebrew
   run_once_before_02-*      # Install packages (brew bundle)
   run_once_after_03-*       # Setup Fish shell + OMF
   run_once_after_04-*       # Configure macOS defaults
   run_once_after_05-*       # Debloat macOS (opt-in)
+  run_after_05b-*           # Clone TomaszJanusz/agent-config, link skills + AGENTS.md
   run_once_after_06-*       # Symlink ~/.agents/skills/ into per-agent dirs
+  run_onchange_after_09-*   # Load the hourly agent-config sync LaunchAgent
 ```
 
 ## Agent skills (`~/.agents/`)
 
-Skille z `~/.agents/skills/` są źródłem prawdy ([Vercel layout](https://github.com/vercel-labs/skills/blob/main/AGENTS.md)). Po `chezmoi apply`:
+Skille i globalne instrukcje agentów żyją w osobnym, prywatnym repo
+[`TomaszJanusz/agent-config`](https://github.com/TomaszJanusz/agent-config). To samo
+repo czyta runner02 (Ansible, rola `agent_config` w `geowarp-runner`). Po
+`chezmoi apply` (prompt `agent_config`, domyślnie włączony):
 
-- pliki lądują w `~/.agents/skills/{nazwa}/`
-- skrypt `run_once_after_06` tworzy symlinki `~/.{claude,codex,cursor,opencode,zed,gemini-cli,antigravity}/skills/{nazwa}` → `~/.agents/skills/{nazwa}`
-- `.skill-lock.json` jest **ignorowany** — to runtime state z absolutnymi ścieżkami Commander Marketplace, generuje go `npx skills` lokalnie
+- `run_after_05b` klonuje repo do `~/Developer/agent-config` (HTTPS przez `gh`)
+  i uruchamia `bin/agent-config-sync --adopt`: linki `~/.agents/skills/{nazwa}` i
+  `~/.claude/skills/{nazwa}` → repo, wygenerowane `~/.codex/AGENTS.md` i
+  `~/.claude/CLAUDE.md`. `--adopt` przenosi stare kopie skilli do
+  `~/.agents/skills-before-agent-config/`
+- `run_after_06` jak dotąd linkuje `~/.agents/skills/*` do pozostałych agentów
+  (`codex`, `cursor`, `opencode`, `zed`, `gemini-cli`, `antigravity`)
+- LaunchAgent `com.tjanusz.agent-config-sync` co godzinę robi `git pull` i
+  ponownie linkuje; log w `~/.local/state/agent-config-sync.log`
+- `~/.agents/skills/**` jest w `.chezmoiignore`; chezmoi już nim nie zarządza
 
-Żeby dodać nowy skill: skopiuj folder do `dot_agents/skills/` i `chezmoi apply` — symlinki odświeżą się automatycznie.
+Żeby dodać skill: commit do `agent-config` (`skills/{nazwa}/` albo
+`npx skills add … -a codex --copy` w tym repo), push — Mac podłapie w ciągu
+godziny, od razu: `~/Developer/agent-config/bin/agent-config-sync`.
 
 ## macOS debloat (opt-in)
 
