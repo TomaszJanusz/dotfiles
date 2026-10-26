@@ -1,5 +1,7 @@
 {{- $agentTools := true -}}
 {{- if hasKey . "agent_tools" -}}{{- $agentTools = .agent_tools -}}{{- end -}}
+{{- $agentConfig := true -}}
+{{- if hasKey . "agent_config" -}}{{- $agentConfig = .agent_config -}}{{- end -}}
 # ══════════════════════════════════════
 # Core (always installed)
 # ══════════════════════════════════════
@@ -8,6 +10,10 @@
 brew "fish"
 brew "chezmoi"
 brew "gum"
+{{ if $agentConfig -}}
+tap "TomaszJanusz/tap"
+brew "TomaszJanusz/tap/kitbag"
+{{ end -}}
 
 # Git
 brew "git"

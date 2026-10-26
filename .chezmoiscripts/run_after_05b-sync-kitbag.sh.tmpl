@@ -1,0 +1,43 @@
+{{- $agentConfig := true -}}
+{{- if hasKey . "agent_config" -}}{{- $agentConfig = .agent_config -}}{{- end -}}
+{{ if and (eq .chezmoi.os "darwin") $agentConfig -}}
+#!/bin/bash
+set -euo pipefail
+
+KITBAG="{{ .brewprefix }}/bin/kitbag"
+CONFIG="$HOME/.config/kitbag/config.toml"
+
+# Preserve a migrated machine's settings. The old clone is configuration data,
+# not the retired synchronizer, and remains the working copy on this Mac.
+if [ ! -f "$CONFIG" ]; then
+  REPO="$HOME/Developer/agent-config"
+  URL="https://github.com/TomaszJanusz/agent-config.git"
+  if [ ! -d "$REPO/.git" ]; then
+    if ! {{ .brewprefix }}/bin/gh auth status --hostname github.com >/dev/null 2>&1; then
+      echo "kitbag: run 'gh auth login', then 'chezmoi apply'."
+      exit 0
+    fi
+    mkdir -p "$(dirname "$REPO")"
+    git clone --quiet "$URL" "$REPO"
+  fi
+  "$KITBAG" config set repo.url "$URL"
+  "$KITBAG" config set repo.path "$REPO"
+  "$KITBAG" config set host mac
+fi
+
+# kitbag 0.1.0 cannot inspect a running job with "(never exited)" and embeds a
+# Cellar path. Skip an unchanged job; unload an outdated job before reinstalling.
+PLIST="$HOME/Library/LaunchAgents/dev.kitbag.agent.plist"
+LABEL="gui/$UID/dev.kitbag.agent"
+BREW_BINARY="{{ .brewprefix }}/opt/kitbag/libexec/kitbag"
+INSTALLED_BINARY=$(/usr/libexec/PlistBuddy -c 'Print :ProgramArguments:0' "$PLIST" 2>/dev/null || true)
+if launchctl print "$LABEL" >/dev/null 2>&1; then
+  if [ "$INSTALLED_BINARY" -ef "$BREW_BINARY" ]; then
+    exit 0
+  fi
+  launchctl bootout "$LABEL"
+fi
+# Do not race a running daemon for kitbag's state lock.
+"$KITBAG" sync
+"$KITBAG" service install
+{{ end -}}

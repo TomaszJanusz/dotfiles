@@ -116,32 +116,38 @@ private_dot_config/         # ~/.config/ managed files
   run_once_after_03-*       # Setup Fish shell + OMF
   run_once_after_04-*       # Configure macOS defaults
   run_once_after_05-*       # Debloat macOS (opt-in)
-  run_after_05b-*           # Clone TomaszJanusz/agent-config, link skills + AGENTS.md
-  run_once_after_06-*       # Symlink ~/.agents/skills/ into per-agent dirs
-  run_onchange_after_09-*   # Load the hourly agent-config sync LaunchAgent
+  run_after_05b-*           # Sync with kitbag and install its launchd daemon
 ```
 
-## Agent skills (`~/.agents/`)
+## Konfiguracja agentów (kitbag)
 
-Skille i globalne instrukcje agentów żyją w osobnym, prywatnym repo
-[`TomaszJanusz/agent-config`](https://github.com/TomaszJanusz/agent-config). To samo
-repo czyta runner02 (Ansible, rola `agent_config` w `geowarp-runner`). Po
-`chezmoi apply` (prompt `agent_config`, domyślnie włączony):
+Synchronizację prowadzi [`TomaszJanusz/kitbag`](https://github.com/TomaszJanusz/kitbag),
+instalowany przez `brew install TomaszJanusz/tap/kitbag`. Zastąpił
+`agent-config-sync`. Prompt `agent_config` pozostaje zgodny z zapisanymi
+ustawieniami chezmoi, ale włącza teraz kitbag.
 
-- `run_after_05b` klonuje repo do `~/Developer/agent-config` (HTTPS przez `gh`)
-  i uruchamia `bin/agent-config-sync --adopt`: linki `~/.agents/skills/{nazwa}` i
-  `~/.claude/skills/{nazwa}` → repo, wygenerowane `~/.codex/AGENTS.md` i
-  `~/.claude/CLAUDE.md`. `--adopt` przenosi stare kopie skilli do
-  `~/.agents/skills-before-agent-config/`
-- `run_after_06` jak dotąd linkuje `~/.agents/skills/*` do pozostałych agentów
-  (`codex`, `cursor`, `opencode`, `zed`, `gemini-cli`, `antigravity`)
-- LaunchAgent `com.tjanusz.agent-config-sync` co godzinę robi `git pull` i
-  ponownie linkuje; log w `~/.local/state/agent-config-sync.log`
-- `~/.agents/skills/**` jest w `.chezmoiignore`; chezmoi już nim nie zarządza
+- `run_after_05b` zachowuje istniejący `~/.config/kitbag/config.toml`.
+  Na nowej maszynie klonuje prywatne repo konfiguracji
+  `TomaszJanusz/agent-config` do `~/Developer/agent-config` i ustawia `host = mac`.
+  Nazwa tego klona nadal jest poprawna: zawiera dane i manifest `kitbag.toml`,
+  a nie instalację narzędzia kitbag. **Nie usuwaj tego klona.**
+- `kitbag sync` stosuje manifest; `kitbag service install` uruchamia daemon
+  `dev.kitbag.agent`. Kitbag zarządza swoim plikiem plist, chezmoi go nie generuje.
+- Manifest określa instancje agentów i miejsca instalacji skilli. Obecnie są to
+  `~/.claude`, `~/.claude_2` i `~/.codex`; współdzielone skille Codexa są w
+  `~/.agents/skills`. Chezmoi nie tworzy dodatkowych linków do wszystkich agentów.
+  Cursor, OpenCode, Zed, Gemini i Antigravity wymagają osobnej konfiguracji;
+  istniejących katalogów i własnych skilli tych programów nie usuwamy.
+- `~/.agents/skills/**` i `~/.agent-browser/config.json` należą do kitbag.
 
-Żeby dodać skill: commit do `agent-config` (`skills/{nazwa}/` albo
-`npx skills add … -a codex --copy` w tym repo), push — Mac podłapie w ciągu
-godziny, od razu: `~/Developer/agent-config/bin/agent-config-sync`.
+Po zmianie repo konfiguracji: `kitbag sync`. Kontrola: `kitbag plan` i
+`kitbag status`. W kitbag 0.1.0 `service status` ma znany błąd parsowania
+`(never exited)`; działanie sprawdź przez `launchctl print gui/$(id -u)/dev.kitbag.agent`.
+Ta wersja zapisuje w plist ścieżkę wersjonowaną w Cellarze, a błąd parsowania
+dotyka też ponownego `service install`. Po ręcznym `brew upgrade kitbag` wykonaj
+`launchctl bootout gui/$(id -u)/dev.kitbag.agent`, potem `kitbag service install`.
+Skrypt chezmoi porównuje binarkę usługi z aktualną wersją Homebrew: zachowuje
+niezmienioną usługę, a po aktualizacji wyładowuje ją i instaluje ponownie.
 
 ## Narzędzia agentów (opt-in `agent_tools`, domyślnie włączone)
 
