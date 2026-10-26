@@ -141,13 +141,7 @@ ustawieniami chezmoi, ale włącza teraz kitbag.
 - `~/.agents/skills/**` i `~/.agent-browser/config.json` należą do kitbag.
 
 Po zmianie repo konfiguracji: `kitbag sync`. Kontrola: `kitbag plan` i
-`kitbag status`. W kitbag 0.1.0 `service status` ma znany błąd parsowania
-`(never exited)`; działanie sprawdź przez `launchctl print gui/$(id -u)/dev.kitbag.agent`.
-Ta wersja zapisuje w plist ścieżkę wersjonowaną w Cellarze, a błąd parsowania
-dotyka też ponownego `service install`. Po ręcznym `brew upgrade kitbag` wykonaj
-`launchctl bootout gui/$(id -u)/dev.kitbag.agent`, potem `kitbag service install`.
-Skrypt chezmoi porównuje binarkę usługi z aktualną wersją Homebrew: zachowuje
-niezmienioną usługę, a po aktualizacji wyładowuje ją i instaluje ponownie.
+`kitbag status`. Obsługa usługi i aktualizacji Homebrew należy do kitbag.
 
 ## Narzędzia agentów (opt-in `agent_tools`, domyślnie włączone)
 

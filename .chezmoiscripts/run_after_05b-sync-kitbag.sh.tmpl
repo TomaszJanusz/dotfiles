@@ -25,19 +25,6 @@ if [ ! -f "$CONFIG" ]; then
   "$KITBAG" config set host mac
 fi
 
-# kitbag 0.1.0 cannot inspect a running job with "(never exited)" and embeds a
-# Cellar path. Skip an unchanged job; unload an outdated job before reinstalling.
-PLIST="$HOME/Library/LaunchAgents/dev.kitbag.agent.plist"
-LABEL="gui/$UID/dev.kitbag.agent"
-BREW_BINARY="{{ .brewprefix }}/opt/kitbag/libexec/kitbag"
-INSTALLED_BINARY=$(/usr/libexec/PlistBuddy -c 'Print :ProgramArguments:0' "$PLIST" 2>/dev/null || true)
-if launchctl print "$LABEL" >/dev/null 2>&1; then
-  if [ "$INSTALLED_BINARY" -ef "$BREW_BINARY" ]; then
-    exit 0
-  fi
-  launchctl bootout "$LABEL"
-fi
-# Do not race a running daemon for kitbag's state lock.
 "$KITBAG" sync
 "$KITBAG" service install
 {{ end -}}
