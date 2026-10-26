@@ -1,7 +1,7 @@
 #!/bin/bash
 # Brewfile template sha: {{ include "dot_Brewfile.tmpl" | sha256sum }}
 # Packages sha:          {{ .packages | sha256sum }}
-# Flags:                 debloat={{ .debloat_macos }} cleanup={{ .cleanup_old_files }}
+# Flags:                 debloat={{ .debloat_macos }} cleanup={{ .cleanup_old_files }} agent_config={{ if hasKey . "agent_config" }}{{ .agent_config }}{{ else }}true{{ end }} agent_tools={{ if hasKey . "agent_tools" }}{{ .agent_tools }}{{ else }}true{{ end }}
 # ^ all three feed into the rendered script's hash so chezmoi's
 #   run_onchange_ machinery re-runs brew bundle when EITHER the
 #   Brewfile template OR the selected packages OR the gum flag

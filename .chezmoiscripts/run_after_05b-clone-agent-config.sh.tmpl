@@ -3,14 +3,15 @@
 {{ if and (eq .chezmoi.os "darwin") $agentConfig -}}
 #!/bin/bash
 # Skills and global agent instructions come from TomaszJanusz/agent-config.
-# This clones it once and links it into the agents; the LaunchAgent
-# com.tjanusz.agent-config-sync keeps it current afterwards. Runs before
-# run_after_06, which then links ~/.agents/skills into the remaining agents.
+# This only clones it once; kitbag (brew "TomaszJanusz/tap/kitbag", its own
+# LaunchAgent dev.kitbag.agent) links it into the agents and keeps it current
+# with repo.path = ~/Developer/agent-config. Runs before run_after_06, which
+# links ~/.agents/skills into the agents kitbag does not manage.
 set -euo pipefail
 
 REPO="$HOME/Developer/agent-config"
-# HTTPS through gh's credential helper: the hourly background pull must not
-# wait for a 1Password SSH approval.
+# HTTPS through gh's credential helper: kitbag's background pull must not wait
+# for a 1Password SSH approval.
 URL="https://github.com/TomaszJanusz/agent-config.git"
 
 if [ ! -d "$REPO/.git" ]; then
@@ -23,7 +24,7 @@ if [ ! -d "$REPO/.git" ]; then
   echo "agent-config: cloned into $REPO"
 fi
 
-# --adopt moves aside skill directories an earlier setup copied in, so the
-# repository's links can replace them.
-"$REPO/bin/agent-config-sync" --adopt || echo "agent-config: sync finished with warnings (see above)."
+if [ ! -x {{ .brewprefix }}/bin/kitbag ] && ! command -v kitbag >/dev/null 2>&1; then
+  echo "agent-config: kitbag is not installed, nothing links $REPO yet; see README (Agent skills)."
+fi
 {{ end -}}

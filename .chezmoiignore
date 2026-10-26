@@ -1,5 +1,3 @@
-{{- $agentConfig := true -}}
-{{- if hasKey . "agent_config" -}}{{- $agentConfig = .agent_config -}}{{- end -}}
 README.md
 dotfiles-cli.md
 bootstrap.sh
@@ -8,12 +6,9 @@ LICENSE
 .DS_Store
 **/.DS_Store
 .agents/.skill-lock.json
-# Populated by agent-config-sync (TomaszJanusz/agent-config).
+# Populated by kitbag from TomaszJanusz/agent-config.
 .agents/skills/**
 .agent-browser/config.json
-{{ if not $agentConfig -}}
-Library/LaunchAgents/com.tjanusz.agent-config-sync.plist
-{{ end -}}
 {{ if not (contains "karabiner-elements" .packages) -}}
 .config/karabiner/**
 {{ end -}}

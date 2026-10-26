@@ -5,7 +5,7 @@
 {{- $debloatMacos := promptBoolOnce . "debloat_macos" "Debloat macOS (clean Dock, mute bundled apps)" true -}}
 {{- $cleanupOldFiles := promptBoolOnce . "cleanup_old_files" "Auto-trash files >30 days in Downloads/Screenshots (daily at 03:00)" true -}}
 {{- $projektySymlink := promptBoolOnce . "projekty_symlink" "Create hidden ~/Projekty symlink pointing to ~/Developer" true -}}
-{{- $agentConfig := promptBoolOnce . "agent_config" "Sync agent skills and global instructions from TomaszJanusz/agent-config (hourly)" true -}}
+{{- $agentConfig := promptBoolOnce . "agent_config" "Clone TomaszJanusz/agent-config and install kitbag to sync agent skills and global instructions" true -}}
 {{- $agentTools := promptBoolOnce . "agent_tools" "Install coding-agent tools (agent-browser, ast-grep, mergiraf, linters) and agent git defaults" true -}}
 
 {{- /* Compute brew prefix based on architecture */ -}}

@@ -650,9 +650,9 @@ Sugerowany layout Secure Note "Personal data exports":
 ### 6.3 Co robi to za nas chezmoi
 
 Automatycznie po `chezmoi apply` na fresh maszynie:
-- Klon `TomaszJanusz/agent-config` + `agent-config-sync` (skille w `~/.agents/skills/` i `~/.claude/skills/`, globalne `AGENTS.md`/`CLAUDE.md`; `run_after_05b`)
-- Symlinki `~/.{codex,cursor,…}/skills/*` → `~/.agents/skills/*` (przez `run_after_06`)
-- LaunchAgent synchronizujący agent-config co godzinę
+- Klon `TomaszJanusz/agent-config` (`run_after_05b`) + `kitbag` z Brewfile; linki skilli i globalne `AGENTS.md`/`CLAUDE.md` robi kitbag (`kitbag service install`, raz ręcznie)
+- Symlinki `~/.{cursor,opencode,…}/skills/*` → `~/.agents/skills/*` (przez `run_after_06`; bez claude/codex, tymi zarządza kitbag)
+- Usunięcie starego LaunchAgenta `com.tjanusz.agent-config-sync` (`run_once_after_09`)
 - Fish/zsh configi
 - Git config
 - Karabiner config (jeśli `karabiner-elements` wybrany w gum)
