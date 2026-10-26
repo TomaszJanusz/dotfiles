@@ -1,5 +1,7 @@
 {{- $agentTools := true -}}
 {{- if hasKey . "agent_tools" -}}{{- $agentTools = .agent_tools -}}{{- end -}}
+{{- $agentConfig := true -}}
+{{- if hasKey . "agent_config" -}}{{- $agentConfig = .agent_config -}}{{- end -}}
 # ══════════════════════════════════════
 # Core (always installed)
 # ══════════════════════════════════════
@@ -284,6 +286,12 @@ brew "yq"              # jq for YAML
 brew "hyperfine"       # benchmarking
 brew "gdu"             # disk usage explorer (binary: gdu-go; gdu is GNU du from coreutils)
 brew "ccusage"         # Claude Code / Codex token usage
+{{ end -}}
+
+# --- Agent config sync (links TomaszJanusz/agent-config into the agents) ---
+{{ if $agentConfig -}}
+tap "TomaszJanusz/tap"
+brew "TomaszJanusz/tap/kitbag"
 {{ end -}}
 
 # --- Design ---

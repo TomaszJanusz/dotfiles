@@ -116,9 +116,9 @@ private_dot_config/         # ~/.config/ managed files
   run_once_after_03-*       # Setup Fish shell + OMF
   run_once_after_04-*       # Configure macOS defaults
   run_once_after_05-*       # Debloat macOS (opt-in)
-  run_after_05b-*           # Clone TomaszJanusz/agent-config, link skills + AGENTS.md
-  run_once_after_06-*       # Symlink ~/.agents/skills/ into per-agent dirs
-  run_onchange_after_09-*   # Load the hourly agent-config sync LaunchAgent
+  run_after_05b-*           # Clone TomaszJanusz/agent-config (kitbag links it)
+  run_after_06-*            # Symlink ~/.agents/skills/ into agents kitbag skips
+  run_once_after_09-*       # Remove the old agent-config-sync LaunchAgent
 ```
 
 ## Agent skills (`~/.agents/`)
@@ -128,20 +128,41 @@ Skille i globalne instrukcje agentów żyją w osobnym, prywatnym repo
 repo czyta runner02 (Ansible, rola `agent_config` w `geowarp-runner`). Po
 `chezmoi apply` (prompt `agent_config`, domyślnie włączony):
 
-- `run_after_05b` klonuje repo do `~/Developer/agent-config` (HTTPS przez `gh`)
-  i uruchamia `bin/agent-config-sync --adopt`: linki `~/.agents/skills/{nazwa}` i
-  `~/.claude/skills/{nazwa}` → repo, wygenerowane `~/.codex/AGENTS.md` i
-  `~/.claude/CLAUDE.md`. `--adopt` przenosi stare kopie skilli do
-  `~/.agents/skills-before-agent-config/`
-- `run_after_06` jak dotąd linkuje `~/.agents/skills/*` do pozostałych agentów
-  (`codex`, `cursor`, `opencode`, `zed`, `gemini-cli`, `antigravity`)
-- LaunchAgent `com.tjanusz.agent-config-sync` co godzinę robi `git pull` i
-  ponownie linkuje; log w `~/.local/state/agent-config-sync.log`
-- `~/.agents/skills/**` jest w `.chezmoiignore`; chezmoi już nim nie zarządza
+- `brew "TomaszJanusz/tap/kitbag"` (Brewfile, ten sam prompt) instaluje
+  [kitbag](https://github.com/TomaszJanusz/kitbag), który linkuje skille
+  (`~/.claude/skills/{nazwa}`, `~/.agents/skills/{nazwa}` dla Codexa) i renderuje
+  globalne `~/.claude/CLAUDE.md` / `~/.codex/AGENTS.md` z repo
+- `run_after_05b` tylko klonuje repo do `~/Developer/agent-config` (HTTPS przez
+  `gh`, żeby pull w tle nie czekał na zgodę 1Password SSH); jeśli `kitbag` nie
+  jest zainstalowany, wypisuje podpowiedź
+- `run_after_06` linkuje `~/.agents/skills/*` do agentów, których kitbag nie
+  obsługuje (`cursor`, `opencode`, `zed`, `gemini-cli`, `antigravity`).
+  `claude` i `codex` świadomie pomija: tymi linkami zarządza kitbag, a `ln -sfn`
+  z chezmoi nadpisywałby je przy każdym apply. Stare linki 06 w
+  `~/.codex/skills` (do `~/.agents/skills`) usuwa
+- `run_once_after_09` sprząta po `agent-config-sync`: jeśli LaunchAgent
+  `com.tjanusz.agent-config-sync` jest załadowany albo jego plist istnieje, robi
+  `bootout` + `disable` i kasuje plist; inaczej nic nie robi
+- `~/.agents/skills/**` jest w `.chezmoiignore`; chezmoi nim nie zarządza
+
+Jednorazowo na nowej maszynie (chezmoi nie konfiguruje kitbaga):
+
+```bash
+kitbag config set repo.url https://github.com/TomaszJanusz/agent-config.git
+kitbag config set repo.path ~/Developer/agent-config
+kitbag config set host mac
+kitbag plan && kitbag sync
+kitbag service install        # LaunchAgent dev.kitbag.agent
+```
+
+Na maszynie, którą wcześniej obsługiwał `agent-config-sync`, zamiast `sync`
+najpierw `migration.legacy_roots` + `kitbag adopt` według
+[przewodnika migracji](https://github.com/TomaszJanusz/kitbag/blob/main/docs/guide-migrate-agent-config-sync.md).
 
 Żeby dodać skill: commit do `agent-config` (`skills/{nazwa}/` albo
-`npx skills add … -a codex --copy` w tym repo), push — Mac podłapie w ciągu
-godziny, od razu: `~/Developer/agent-config/bin/agent-config-sync`.
+`npx skills add … -a codex --copy` w tym repo), push — demon kitbag go podłapie,
+od razu: `kitbag sync`. Link `~/.local/bin/agent-config-sync` i log
+`~/.local/state/agent-config-sync.log` po starym skrypcie usuń ręcznie.
 
 ## Narzędzia agentów (opt-in `agent_tools`, domyślnie włączone)
 

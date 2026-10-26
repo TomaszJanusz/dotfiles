@@ -9,7 +9,19 @@ if [ ! -d "$SKILLS_DIR" ]; then
   exit 0
 fi
 
-AGENTS=(claude codex cursor opencode zed gemini-cli antigravity)
+# Not claude or codex: kitbag owns ~/.claude/skills/<name> and
+# ~/.agents/skills/<name> (Codex reads the latter). Linking claude here would
+# replace kitbag's links with chains through ~/.agents/skills on every apply.
+AGENTS=(cursor opencode zed gemini-cli antigravity)
+
+# Earlier versions also linked ~/.codex/skills; kitbag never writes there, so
+# drop those links (only ones pointing into $SKILLS_DIR) to avoid duplicates.
+for link in "$HOME/.codex/skills"/*; do
+  [ -L "$link" ] || continue
+  case "$(readlink "$link")" in
+    "$SKILLS_DIR"/*) rm -f "$link" ;;
+  esac
+done
 
 for agent in "${AGENTS[@]}"; do
   target="$HOME/.$agent/skills"

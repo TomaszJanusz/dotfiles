@@ -1,0 +1,19 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# kitbag replaced agent-config-sync. Unloads and removes the old hourly
+# LaunchAgent if an earlier apply installed it; does nothing otherwise.
+# Runs regardless of agent_config: opting out must not leave it running.
+set -euo pipefail
+
+NAME="com.tjanusz.agent-config-sync"
+AGENT="$HOME/Library/LaunchAgents/$NAME.plist"
+LABEL="gui/$UID/$NAME"
+
+if launchctl print "$LABEL" >/dev/null 2>&1 || [ -e "$AGENT" ]; then
+  launchctl bootout "$LABEL" 2>/dev/null || true
+  # bootout alone loads it again at login while the plist exists.
+  launchctl disable "$LABEL" 2>/dev/null || true
+  rm -f "$AGENT"
+  echo "agent-config-sync LaunchAgent removed; kitbag (dev.kitbag.agent) syncs instead."
+fi
+{{ end -}}
